@@ -45,7 +45,7 @@
             </div>
         </header>
 
-        {{-- MAIN CONTENT (Lebar diubah menjadi max-w-6xl agar lurus dengan navbar) --}}
+        {{-- MAIN CONTENT --}}
         <main class="pt-32 pb-16 px-4 md:px-0 max-w-6xl mx-auto">
             @php
                 // Data tiruan
@@ -60,7 +60,7 @@
                 $displayGroups = isset($groups) && count($groups) > 0 ? $groups : $dummyGroups;
             @endphp
 
-            {{-- HEADER KONTEN (Di luar kotak putih, menyatu dengan background) --}}
+            {{-- HEADER KONTEN --}}
             <div class="flex flex-col md:flex-row justify-between md:items-end mt-4 mb-5 gap-4 px-2">
                 <div>
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight leading-none">
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            {{-- KONTEN TUNGGAL (Kotak Pembungkus Pencarian & Kartu) --}}
+            {{-- KONTEN TUNGGAL --}}
             <div class="w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-[20px] shadow-lg p-5 md:p-6 border border-white dark:border-gray-800">
                 
                 {{-- SEARCH & SORTING BAR --}}
@@ -98,18 +98,19 @@
                                 <option>Dataset Terbanyak</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center text-gray-500">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7-7-7-7"></path></svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {{-- Kumpulan Kartu Grup (Diubah jadi xl:grid-cols-4 agar lebih mungil dan proporsional) --}}
+                {{-- Kumpulan Kartu Grup --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     @foreach($displayGroups as $group)
-                    <a href="#" class="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    
+                    {{-- 🔥 DIUBAH MENJADI LINK LANGSUNG KE HALAMAN GROUP UTAMA 🔥 --}}
+                    <a href="https://opendata.sidoarjokab.go.id/group/" target="_blank" class="group flex flex-col bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                         
-                        {{-- Ikon Folder (Ukurannya dikecilkan) --}}
                         <div class="h-20 bg-green-50 dark:bg-green-900/30 flex flex-col items-center justify-center border-b border-gray-100 dark:border-gray-700/50 group-hover:bg-green-100 dark:group-hover:bg-green-900/50 transition-colors relative overflow-hidden">
                             <div class="absolute -right-4 -top-4 w-12 h-12 bg-green-200/50 dark:bg-green-700/20 rounded-full blur-xl"></div>
                             <div class="w-10 h-10 bg-white dark:bg-gray-800 rounded-xl flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform duration-300 border border-green-100 dark:border-green-800 z-10">
@@ -117,10 +118,9 @@
                             </div>
                         </div>
 
-                        {{-- Informasi (Font dikecilkan sedikit) --}}
                         <div class="p-3.5 flex-1 flex flex-col text-left">
                             <p class="text-[8px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-1">Klasifikasi Bidang</p>
-                            <h3 class="font-black text-[11px] text-gray-900 dark:text-gray-100 uppercase leading-snug mb-2 group-hover:text-green-600 transition-colors line-clamp-2 flex-1">
+                            <h3 class="font-black text-[11px] text-gray-900 dark:text-gray-100 uppercase leading-snug mb-2 group-hover:text-green-600 transition-colors line-clamp-2 flex-1" title="{{ $group['name'] }}">
                                 {{ $group['name'] }}
                             </h3>
                             

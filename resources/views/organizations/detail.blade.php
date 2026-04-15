@@ -16,25 +16,36 @@
 
     {{-- ── FLOATING NAVBAR ── --}}
     <header class="fixed top-0 left-0 right-0 z-50 px-4 pt-5 transition-all duration-300">
-        <div class="max-w-6xl mx-auto bg-white/70 dark:bg-gray-900/70 backdrop-blur-md rounded-full shadow-xl px-6 py-3 flex items-center justify-between border border-white/30 dark:border-gray-700">
-            <div class="flex items-center space-x-3 text-left">
-                <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-9 h-9 object-contain">
-                <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
-                    <span class="block text-left">Satu Data</span>
-                    <span class="block text-xs md:text-sm font-semibold opacity-80">Kabupaten Sidoarjo</span>
-                </h1>
+            <div class="max-w-6xl mx-auto bg-white/70 dark:bg-gray-900/70 backdrop-blur-md rounded-full shadow-xl px-6 py-3 flex items-center justify-between border border-white/30 dark:border-gray-700">
+                <div class="flex items-center space-x-3 text-left">
+                    <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" 
+                         alt="Logo Kabupaten Sidoarjo" 
+                         class="w-9 h-9 object-contain">
+                    <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
+                        <span class="block text-left">Satu Data</span>
+                        <span class="block text-xs md:text-sm font-semibold opacity-80">Kabupaten Sidoarjo</span>
+                    </h1>
+                </div>
+
+                <nav class="hidden md:flex space-x-6">
+                    <a href="/" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition">Home</a>
+                    <a href="/datasets" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition">Datasets</a>
+                    <a href="/organizations" class="text-sm text-green-600 font-bold transition">Organizations</a>
+                    <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition">Groups</a>
+                    <a href="/about" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition">About</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="window.location.href='{{ url('/login') }}'" class="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-full transition text-sm font-medium shadow-lg shadow-green-500/20">
+                        Login
+                    </button>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                        <svg id="theme-toggle-light-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                    </button>
+                </div>
             </div>
-            <nav class="hidden md:flex space-x-6">
-                <a href="/" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Home</a>
-                <a href="/datasets" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Datasets</a>
-                <a href="/organizations" class="text-sm text-green-600 font-bold transition">Organizations</a>
-                <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">About</a>
-            </nav>
-            <div class="flex items-center space-x-4">
-                <button onclick="window.location.href='{{ url('/login') }}'" class="bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-full transition text-sm font-medium shadow-lg">Login</button>
-            </div>
-        </div>
-    </header>
+        </header>
 
     {{-- Main Container: pt-24 merapatkan jarak; max-w-6xl menyejajarkan dengan navbar --}}
     <main class="max-w-6xl mx-auto px-0 pt-32 pb-48 text-left">
