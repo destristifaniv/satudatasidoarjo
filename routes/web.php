@@ -16,7 +16,7 @@ use Carbon\Carbon;
 */
 
 Route::get('/', function () {
-    // 1. KUNCI: Hanya hitung kelengkapan untuk data yang sudah APPROVED
+    // 1. Hanya hitung kelengkapan untuk data yang sudah APPROVED
     $allDatasets = Dataset::where('status', 'approved')->get();
     $totalDatasets = $allDatasets->count();
     $totalPercentage = 0;
@@ -39,12 +39,12 @@ Route::get('/', function () {
         $avgVerified = 0;
     }
 
-    // 2. KUNCI: Statistik hanya menampilkan data APPROVED & Filter Role OPD
+    // 2. Statistik hanya menampilkan data APPROVED & Filter Role OPD
     $stats = [
         'total_dataset'      => $totalDatasets,
         
         // Hitung berdasarkan opd_name yang unik, karena 1 OPD bisa punya 1 Staf dan 1 Kadis. 
-        // Kita hitung jumlah instansinya, bukan jumlah orangnya.
+        // Hitung jumlah instansinya, bukan jumlah orangnya.
         'organisasi_opd'     => User::whereNotNull('opd_name')
                                     ->where('opd_name', '!=', '')
                                     ->distinct('opd_name')
@@ -114,7 +114,7 @@ Route::get('/', function () {
     $trendCounts = $trendData->pluck('total')->toArray();
 
     // ========================================================================
-    // DATA UNTUK PETA KECAMATAN (DIPERBAIKI 100% SAMA DENGAN HALAMAN DETAIL)
+    // DATA UNTUK PETA KECAMATAN 
     // ========================================================================
     $kecamatanDataMap = User::where('role', 'opd')
         ->where('name', 'like', '%Kecamatan%')
@@ -170,7 +170,7 @@ Route::get('/', function () {
 Route::get('/datasets', function () {
     $stats = [
         'total_dataset'  => Dataset::where('status', 'approved')->count(),
-        'organisasi_opd' => User::where('role', 'opd')->count(), // 🔥 Cuma hitung OPD
+        'organisasi_opd' => User::where('role', 'opd')->count(),
         'total_download' => Dataset::where('status', 'approved')->sum('downloads'),
     ];
 
@@ -198,7 +198,7 @@ Route::get('/datasets/download/{id}', [DatasetController::class, 'download'])->n
 
 Route::get('/organizations', function () {
     // Filter Role OPD & Hitung organisasi berdasarkan data yang APPROVED
-    $query = \App\Models\User::where('role', 'opd') // FILTER UTAMA
+    $query = \App\Models\User::where('role', 'opd')
         ->withCount(['datasets' => function($q) {
             $q->where('status', 'approved');
         }]);
@@ -220,7 +220,7 @@ Route::get('/groups', function () {
 Route::get('/about', function () {
     $stats = [
         'total_dataset'  => Dataset::where('status', 'approved')->count(),
-        'organisasi_opd' => User::where('role', 'opd')->count(), // 🔥 Cuma hitung OPD
+        'organisasi_opd' => User::where('role', 'opd')->count(),
         'total_download' => Dataset::where('status', 'approved')->sum('downloads'),
     ];
     return view('about', compact('stats'));

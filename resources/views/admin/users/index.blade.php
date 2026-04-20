@@ -62,14 +62,14 @@
                 @csrf
                 <div>
                     <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wide">Nama Lengkap / Jabatan <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" required class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm transition-all shadow-sm py-2" placeholder="Misal: Camat Candi">
+                    <input type="text" name="name" required class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm transition-all shadow-sm py-2" placeholder="">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wide">Email Login <span class="text-red-500">*</span></label>
-                    <input type="email" name="email" required class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm transition-all shadow-sm py-2" placeholder="camat.candi@gmail.com">
+                    <input type="email" name="email" required class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm transition-all shadow-sm py-2" placeholder="">
                 </div>
                 
-                {{-- FIELD PASSWORD DENGAN IKON MATA --}}
+                {{-- FIELD PASSWORD --}}
                 <div x-data="{ showPassword: false }">
                     <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wide">Password Default <span class="text-red-500">*</span></label>
                     <div class="relative">
@@ -84,14 +84,14 @@
                 <div>
                     <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wide">Hak Akses (Role) <span class="text-red-500">*</span></label>
                     <select name="role" required class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm font-medium transition-all shadow-sm py-2 cursor-pointer">
-                        <option value="opd">👩‍💻 OPD (Staf / Operator)</option>
-                        <option value="pimpinan">👔 Pimpinan (Camat / Kadis)</option>
-                        <option value="admin">🛡️ Super Admin (Kominfo)</option>
+                        <option value="opd">OPD (Staf / Operator)</option>
+                        <option value="pimpinan">Pimpinan (Camat / Kadis)</option>
+                        <option value="admin">Super Admin (Kominfo)</option>
                     </select>
                 </div>
                 <div class="pt-1">
                     <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wide">Nama Instansi (OPD)</label>
-                    <input type="text" name="opd_name" class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm transition-all shadow-sm py-2 bg-gray-50 dark:bg-gray-800" placeholder="Ketik persis: Kecamatan Candi">
+                    <input type="text" name="opd_name" class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-sm transition-all shadow-sm py-2 bg-gray-50 dark:bg-gray-800" placeholder="">
                     <p class="text-[9px] text-orange-500 font-bold mt-1.5 leading-tight flex items-start"><svg class="w-3 h-3 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg> Wajib diisi identik untuk Staf dan Pimpinannya.</p>
                 </div>
                 <button type="submit" class="w-full mt-2 bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white font-extrabold py-3 px-4 rounded-xl transition-all shadow-lg shadow-green-500/30 hover:shadow-green-500/50 hover:-translate-y-0.5 flex items-center justify-center">
@@ -101,10 +101,10 @@
             </form>
         </div>
 
-        {{-- BAGIAN KANAN: Tabel Daftar User (Dikunci Tingginya & Scroll Internal) --}}
+        {{-- Tabel Daftar User Sistem --}}
         <div class="xl:col-span-2 bg-white dark:bg-gray-800 rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 flex flex-col h-full overflow-hidden">
             
-            {{-- Judul Tabel (Tidak ikut scroll) --}}
+            {{-- Judul Tabel --}}
             <div class="shrink-0 p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
                 <h3 class="text-lg font-extrabold text-gray-800 dark:text-white">Daftar Pengguna Sistem</h3>
                 <span class="bg-white dark:bg-gray-700 text-xs font-bold px-3 py-1 rounded-full border border-gray-200 dark:border-gray-600 shadow-sm">{{ $users->count() }} Total Akun</span>

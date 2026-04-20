@@ -4,7 +4,6 @@
 <div class="flex h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 overflow-hidden" 
      x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
     
-    {{-- SIDEBAR: DIBIARKAN TETAP SEPERTI ASLINYA --}}
     <aside :class="sidebarOpen ? 'w-72' : 'w-0 md:w-20'" class="relative h-full bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col sticky top-0 z-50 shadow-xl overflow-hidden shrink-0">
         <div class="p-6 h-24 border-b border-teal-400/30 dark:border-teal-600/30 flex items-center justify-between overflow-hidden">
             <div class="flex items-center space-x-3 min-w-[180px]" x-show="sidebarOpen" x-transition>

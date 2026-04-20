@@ -61,7 +61,7 @@
 
         {{-- STATS SECTION (MODAL EXPANDING CARDS - UKURAN KECIL) --}}
         @php
-            // 🔥 PERBAIKAN: Hanya mengambil dan menghitung data yang statusnya 'approved' 🔥
+            // Menghitung persentase kelengkapan data, mengambil dan menghitung data yang statusnya 'approved'
             $allDatasetsData = \App\Models\Dataset::where('status', 'approved')->get();
             $totalAll = $allDatasetsData->count();
             $totalPercentageAll = 0;
@@ -83,10 +83,10 @@
             
             $targetOPD = 50; 
             
-            // 🚨 PERBAIKAN FINAL: Hanya menghitung akun yang perannya sebagai Staf/OPD.
+            // Hanya menghitung akun yang perannya sebagai Staf/OPD.
             $opdTerdaftar = \App\Models\User::where('role', 'opd')->count();
             
-            // 🔥 PERBAIKAN: Hanya menghitung unduhan dari data yang 'approved' 🔥
+            // Hanya menghitung unduhan dari data yang 'approved'
             $totalDownload = \App\Models\Dataset::where('status', 'approved')->sum('downloads');
         @endphp
 
@@ -303,7 +303,7 @@
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .leaflet-interactive { transition: all 0.3s; }
 
-    /* 🔥 MENGHILANGKAN GARIS KOTAK SAAT PETA DIKLIK 🔥 */
+    /* MENGHILANGKAN GARIS KOTAK SAAT PETA DIKLIK */
     .leaflet-interactive:focus,
     .leaflet-container *:focus {
         outline: none !important;
@@ -312,7 +312,7 @@
         -webkit-tap-highlight-color: transparent;
     }
 
-    /* 🔥 TAMBAHAN UNTUK POP-UP PETA 🔥 */
+    /* POP-UP PETA */
     .custom-map-tooltip {
         background: rgba(255, 255, 255, 0.95) !important;
         border: 1px solid rgba(16, 185, 129, 0.2) !important;
@@ -322,7 +322,7 @@
         padding: 8px !important;
     }
     
-    /* Hilangkan segitiga panah bawaan leaflet yang jelek */
+    /* Hilangkan segitiga panah bawaan leaflet */
     .custom-map-tooltip::before,
     .custom-map-tooltip::after {
         display: none !important; 
@@ -378,8 +378,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const count = kecData.count || 0;
                     const orgId = kecData.id;
                     
-                    // --- 🔥 PERBAIKAN LOGIKA DATA 🔥 ---
-                    // Coba beberapa kemungkinan nama key dari controller agar lebih aman
+                    // Layanan
                     const layanan = kecData.layanan ?? kecData.total_layanan ?? 0; 
                     
                     // Tangani format pertumbuhan dan cek apakah minus/plus

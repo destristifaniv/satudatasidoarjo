@@ -29,7 +29,7 @@
                 </p>
             </div>
 
-            {{-- 🔥 KOTAK PESAN ERROR LOGIN (DENGAN BAHASA INDONESIA RAMAH) 🔥 --}}
+            {{-- KOTAK PESAN ERROR LOGIN --}}
             @if($errors->any())
                 <div class="mb-5 p-4 bg-red-50/80 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 rounded-2xl flex items-start gap-3 shadow-sm animate-pulse">
                     <div class="text-red-500 dark:text-red-400 mt-0.5">

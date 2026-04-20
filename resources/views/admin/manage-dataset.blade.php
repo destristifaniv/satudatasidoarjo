@@ -122,7 +122,7 @@
                 {{-- LONCENG NOTIFIKASI --}}
                 <div class="relative" @click.away="isNotifOpen = false">
                     @php
-                        // 🔥 LOGIKA NOTIFIKASI GLOBAL SUPER RADAR 🔥
+                        // LOGIKA NOTIFIKASI GLOBAL SUPER RADAR
                         $user = auth()->user();
                         $instansi = $user->opd_name ?: $user->name;
                         $userIds = \App\Models\User::where('opd_name', $instansi)->orWhere('name', $instansi)->pluck('id');
@@ -165,9 +165,7 @@
                             @if($notifCount > 0)
                                 @foreach($notifItems as $item)
                                     @php
-                                        // 🔥 PERBAIKAN PENTING DI SINI 🔥
-                                        // Ubah urlencode($item->dssd_code) menjadi urlencode($item->name)
-                                        // Karena sistem pencarian (search bar) kamu mencari berdasarkan Nama Dataset.
+                                        // Karena sistem pencarian (search bar) mencari berdasarkan Nama Dataset.
                                         $targetUrl = auth()->user()->role == 'opd' 
                                             ? route('admin.upload.dataset.edit', $item->id) 
                                             : "/admin/manage-dataset?search=" . urlencode($item->name);
@@ -336,7 +334,7 @@
                 <input type="hidden" name="status" value="rejected">
                 <div class="mb-5 text-left">
                     <label class="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-widest text-left text-left">Apa yang harus diperbaiki? <span class="text-red-500">*</span></label>
-                    <textarea name="feedback" required rows="4" class="w-full rounded-[16px] border border-gray-200 dark:bg-gray-700 dark:text-white text-sm p-4 transition-all outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 text-left" placeholder="Contoh: File Excel lampiran untuk tahun 2022 masih kosong, tolong diunggah ulang file yang benar."></textarea>
+                    <textarea name="feedback" required rows="4" class="w-full rounded-[16px] border border-gray-200 dark:bg-gray-700 dark:text-white text-sm p-4 transition-all outline-none focus:ring-4 focus:ring-red-500/10 focus:border-red-500 text-left" placeholder=""></textarea>
                 </div>
                 <div class="flex justify-end space-x-3 text-left">
                     <button type="button" @click="rejectModalOpen = false" class="px-5 py-2.5 text-xs font-black text-gray-600 bg-gray-100 rounded-xl uppercase tracking-widest text-left">Batal</button>

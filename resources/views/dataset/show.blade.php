@@ -52,7 +52,7 @@
 
             <div class="bg-white dark:bg-gray-900 rounded-[32px] p-6 border border-gray-100 dark:border-gray-800 shadow-sm text-left">
                 
-                {{-- ── HEADER (DESAIN LAMA TAPI LEBIH KECIL) ── --}}
+                {{-- ── HEADER ── --}}
                 <div class="flex flex-col md:flex-row gap-6 items-start mb-6">
                     {{-- Box Organisasi Kiri --}}
                     <div class="w-full md:w-52 shrink-0 bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-inner">

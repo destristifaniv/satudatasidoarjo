@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="relative h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 transition-colors duration-500 overflow-hidden" 
-     x-data="{ showPass: false, showConfirm: false }">
+     x-data="{ showPass: false, showConfirm: false, selectedRole: 'opd' }">
     
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div class="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[100px] rounded-full"></div>
@@ -54,6 +54,33 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1">
                         <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
+                            Pilih Role
+                        </label>
+                        <div class="relative">
+                            <select name="role" x-model="selectedRole" required class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs appearance-none cursor-pointer font-semibold">
+                                <option value="opd">Staf / OPD</option>
+                                <option value="pimpinan">Pimpinan</option>
+                                <option value="admin">Administrator</option>
+                            </select>
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1" x-show="selectedRole === 'opd'" x-transition>
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block text-truncate" title="Nama Instansi (OPD)">
+                            Instansi (OPD)
+                        </label>
+                        <input type="text" name="opd_name" value="{{ old('opd_name') }}"
+                               class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
+                               placeholder="Contoh: BAPPEDA">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="space-y-1">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
                             Password
                         </label>
                         <div class="relative group">
@@ -61,12 +88,10 @@
                                    class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
                                    placeholder="••••••••">
                             <button type="button" @click="showPass = !showPass" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors">
-                                {{-- Mata Terbuka --}}
                                 <svg x-show="showPass" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
-                                {{-- Mata Tertutup (Eye-off dengan garis) --}}
                                 <svg x-show="!showPass" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88L4.34 4.34m15.32 15.32l-5.34-5.34M17.614 6.386A10.05 10.05 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.17 0-2.285-.202-3.32-.572M12 5c4.478 0 8.268 2.943 9.542 7" />
                                 </svg>
@@ -83,12 +108,10 @@
                                    class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
                                    placeholder="••••••••">
                             <button type="button" @click="showConfirm = !showConfirm" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors">
-                                {{-- Mata Terbuka --}}
                                 <svg x-show="showConfirm" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
-                                {{-- Mata Tertutup --}}
                                 <svg x-show="!showConfirm" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88L4.34 4.34m15.32 15.32l-5.34-5.34M17.614 6.386A10.05 10.05 0 0121.542 12c-1.274 4.057-5.064 7-9.542 7-1.17 0-2.285-.202-3.32-.572M12 5c4.478 0 8.268 2.943 9.542 7" />
                                 </svg>

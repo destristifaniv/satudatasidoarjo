@@ -40,8 +40,7 @@
             </a>
         </nav>
     </aside>
-
-    {{-- 🔥 MAIN Dikuci 1 Layar Penuh 🔥 --}}
+    
     <main class="flex-1 h-screen overflow-hidden relative p-4 scroll-smooth text-left flex flex-col justify-center">
         <div class="fixed top-0 right-0 w-[500px] h-[500px] bg-teal-200/20 dark:bg-teal-900/10 blur-[120px] rounded-full -z-10 opacity-60"></div>
         

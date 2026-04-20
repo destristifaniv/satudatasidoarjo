@@ -35,7 +35,6 @@
             </div>
         </header>
 
-    {{-- KONTEN ABOUT YANG DIPERKECIL (max-w-4xl agar lebih ramping) --}}
     <main class="pt-32 pb-16 px-6 max-w-4xl mx-auto">
         
         {{-- Hero Text About --}}
