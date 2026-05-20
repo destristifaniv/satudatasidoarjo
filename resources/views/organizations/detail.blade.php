@@ -99,7 +99,7 @@
         <div x-data="{ openModal: false }" class="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm mb-10 overflow-hidden mx-2 text-left">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-black uppercase text-[10px] tracking-widest text-gray-900 dark:text-white">Matriks Keberlanjutan Program</h3>
-                <button @click="openModal = true" class="md:hidden text-[9px] font-bold text-green-700 uppercase bg-green-50 px-3 py-1 rounded-full">Detail</button>
+                {{-- <button @click="openModal = true" class="md:hidden text-[9px] font-bold text-green-700 uppercase bg-green-50 px-3 py-1 rounded-full">Detail</button> --}}
             </div>
 
             {{-- Versi Laptop: Animasi Scroll (Sembunyi di HP dengan class hidden md:block) --}}

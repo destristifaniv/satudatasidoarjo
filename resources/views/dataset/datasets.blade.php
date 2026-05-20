@@ -6,105 +6,143 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
-        /* =========================================
-           PAGINATION DESKTOP (ANGKA 1, 2, 3...) 
-           ========================================= */
-        .pagination nav > div.hidden.sm\:flex-1 > div:first-child { display: none !important; }
-        .pagination nav > div.hidden.sm\:flex-1 { justify-content: center !important; }
-        .pagination nav span.relative.z-0.inline-flex { box-shadow: none !important; gap: 8px; }
+        /* PAGINATION BASE */
+        .pagination nav { width: 100%; display: flex; flex-direction: column; align-items: center; }
 
-        .pagination nav span.relative.z-0.inline-flex > span,
-        .pagination nav span.relative.z-0.inline-flex > a {
-            border-radius: 12px !important;
-            margin: 0 !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
-            padding: 10px 16px !important;
-            border: 1px solid #e5e7eb !important;
-            background-color: white !important;
-            color: #4b5563 !important;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
-            transition: all 0.2s;
+        /* PAGINATION DESKTOP */
+        @media (min-width: 640px) {
+            .pagination nav > div.hidden.sm\:flex-1 { 
+                display: flex !important; 
+                justify-content: center !important; 
+                width: 100%;
+            }
+            .pagination nav > div.hidden.sm\:flex-1 > div:first-child { display: none !important; }
         }
 
-        .pagination nav span.relative.z-0.inline-flex > a:hover {
-            background-color: #f3f4f6 !important;
-            transform: translateY(-2px);
+        .pagination nav span.relative.z-0.inline-flex { 
+            box-shadow: none !important; 
+            gap: 6px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+        }
+        
+        /* FIX: Menghilangkan styling dari wrapper bawaan Laravel agar tidak bentrok "kotak di dalam kotak" */
+        .pagination nav span.relative.z-0.inline-flex > span {
+            display: contents;
         }
 
-        .pagination nav span[aria-current="page"] > span {
-            background-color: #15803d !important;
-            color: white !important;
-            border-color: #15803d !important;
-            box-shadow: 0 4px 6px -1px rgba(21, 128, 61, 0.3) !important;
+        /* Target langsung ke tombol angka/panah */
+        .pagination nav span.relative.z-0.inline-flex > span > span, 
+        .pagination nav span.relative.z-0.inline-flex > a { 
+            border-radius: 10px !important; 
+            margin: 0 !important; 
+            font-weight: 600 !important; 
+            font-size: 14px !important; 
+            padding: 8px 14px !important; 
+            border: 1px solid #e5e7eb !important; 
+            background-color: white !important; 
+            color: #4b5563 !important; 
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important; 
+            transition: all 0.2s; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+        }
+        
+        .pagination nav span.relative.z-0.inline-flex > a:hover { 
+            background-color: #f3f4f6 !important; 
+            transform: translateY(-2px); 
+        }
+        
+        /* Tombol Aktif */
+        .pagination nav span[aria-current="page"] > span { 
+            background-color: #15803d !important; 
+            color: white !important; 
+            border-color: #15803d !important; 
+            box-shadow: 0 4px 6px -1px rgba(21, 128, 61, 0.3) !important; 
         }
 
-        /* TEMA GELAP UNTUK DESKTOP */
-        .dark .pagination nav span.relative.z-0.inline-flex > span:not([aria-current="page"]),
-        .dark .pagination nav span.relative.z-0.inline-flex > a {
-            background-color: #1f2937 !important; /* bg-gray-800 */
-            border-color: #374151 !important; /* border-gray-700 */
-            color: #d1d5db !important; /* text-gray-300 */
+        /* Tombol Disabled (Panah ujung jika tidak bisa diklik) */
+        .pagination nav span[aria-disabled="true"] > span {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f9fafb !important;
         }
-
-        .dark .pagination nav span.relative.z-0.inline-flex > a:hover {
-            background-color: #374151 !important; /* bg-gray-700 */
-        }
-
-        /* =========================================
-           PAGINATION MOBILE (PREV & NEXT)
-           ========================================= */
-        .pagination .sm\:hidden { 
-            display: flex !important;
-            width: 100%;
+        
+        /* PAGINATION MOBILE */
+        .pagination nav > div.sm\:hidden { 
+            display: flex !important; 
+            width: 100%; 
+            justify-content: space-between;
             gap: 12px; 
         }
         
-        .pagination .sm\:hidden > a,
-        .pagination .sm\:hidden > span {
-            flex: 1;
+        @media (min-width: 640px) {
+            .pagination nav > div.sm\:hidden { display: none !important; }
+        }
+
+        .pagination nav > div.sm\:hidden > a, 
+        .pagination nav > div.sm\:hidden > span { 
+            flex: 1; 
+            display: flex !important; 
+            flex-direction: row !important; 
+            align-items: center !important; 
+            justify-content: center !important; 
+            gap: 8px !important;
+            border-radius: 10px !important; 
+            padding: 10px 16px !important; 
+            font-weight: 600 !important; 
+            font-size: 14px !important; 
+            color: #15803d !important; 
+            background-color: white !important; 
+            border: 1px solid #e5e7eb !important; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important; 
+            transition: all 0.2s; 
             text-align: center;
-            border-radius: 12px !important;
-            padding: 12px !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
-            color: #15803d !important;
-            background-color: white !important;
-            border: 1px solid #e5e7eb !important;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-            transition: all 0.2s;
         }
 
-        .pagination .sm\:hidden > a:active {
+        .pagination nav > div.sm\:hidden > a:hover {
             background-color: #f0fdf4 !important;
-            transform: scale(0.98);
+            border-color: #15803d !important;
         }
 
-        /* TEMA GELAP UNTUK MOBILE (SAPU JAGAT) */
-        .dark .pagination .sm\:hidden > a,
-        .dark .pagination .sm\:hidden > span {
-            background-color: #1f2937 !important; /* Abu-abu gelap serasi dengan background */
+        .pagination nav > div.sm\:hidden > span {
+            color: #9ca3af !important;
+            border-color: #e5e7eb !important;
+            background-color: #f9fafb !important;
+            box-shadow: none !important;
+        }
+        
+        /* DARK MODE - DESKTOP & MOBILE */
+        .dark .pagination nav span.relative.z-0.inline-flex > span > span, 
+        .dark .pagination nav span.relative.z-0.inline-flex > a { 
+            background-color: #1f2937 !important; 
             border-color: #374151 !important; 
-            color: #4ade80 !important; /* Teks hijau menyala */
+            color: #d1d5db !important; 
         }
-
-        .dark .pagination .sm\:hidden > a:active {
+        .dark .pagination nav span[aria-current="page"] > span { 
+            background-color: #15803d !important; 
+            color: white !important; 
+            border-color: #15803d !important; 
+        }
+        .dark .pagination nav span.relative.z-0.inline-flex > a:hover { 
             background-color: #374151 !important; 
         }
+        .dark .pagination nav span[aria-disabled="true"] > span {
+            background-color: #111827 !important;
+            opacity: 0.4;
+        }
 
-        /* =========================================
-           UTILITIES & FILTER MOBILE
-           ========================================= */
+        .dark .pagination nav > div.sm\:hidden > a { background-color: #1f2937 !important; border-color: #374151 !important; color: #4ade80 !important; }
+        .dark .pagination nav > div.sm\:hidden > span { background-color: #111827 !important; border-color: #374151 !important; color: #6b7280 !important; }
+
+        /* UTILITIES */
         .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         #dataset-wrapper { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        
         @media (max-width: 1024px) {
-            .mobile-filter-container {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
+            .mobile-filter-container { display: flex; flex-direction: column; gap: 1rem; }
             .mobile-filter-item { width: 100%; }
             #dataset-wrapper { display: flex !important; flex-direction: column !important; }
             .dataset-card { width: 100% !important; margin-bottom: 1rem; }
@@ -113,48 +151,44 @@
 
     {{-- NAVBAR --}}
     <header x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:pt-5 transition-all duration-300">
-        <div class="max-w-6xl mx-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl md:rounded-full shadow-xl px-4 md:px-6 py-3 border border-white/30 dark:border-gray-700">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3 text-left">
-                    <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain">
-                    <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
-                        <span class="block">Satu Data</span>
-                        <span class="block text-[11px] md:text-sm font-semibold opacity-80">Kab. Sidoarjo</span>
-                    </h1>
-                </div>
-                
-                {{-- Desktop Nav --}}
-                <nav class="hidden md:flex space-x-6">
-                    <a href="/" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Home</a>
-                    <a href="/datasets" class="text-sm text-green-600 font-bold transition">Datasets</a>
-                    <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Organizations</a>
-                    <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Groups</a>
-                    <a href="/about" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">About</a>
-                </nav>
-
-                <div class="flex items-center space-x-2 md:space-x-4">
-                    <button onclick="window.location.href='{{ url('/login') }}'" class="hidden md:block bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-full transition text-sm font-medium shadow-lg shadow-green-500/20">Login</button>
-                    
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition focus:outline-none">
-                        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                        <svg id="theme-toggle-light-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
-                    </button>
-
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
-                        <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                        <svg x-show="mobileMenuOpen" style="display: none;" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                </div>
+        <div class="max-w-6xl mx-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl md:rounded-full shadow-xl px-4 md:px-6 py-3 flex items-center justify-between border border-white/30 dark:border-gray-700">
+            <div class="flex items-center space-x-3 text-left">
+                <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain">
+                <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
+                    <span class="block">Satu Data</span>
+                    <span class="block text-[10px] md:text-sm font-semibold opacity-80">Kab. Sidoarjo</span>
+                </h1>
             </div>
 
-            <div x-show="mobileMenuOpen" x-transition class="md:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col space-y-3 pb-2">
-                <a href="/" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Home</a>
-                <a href="/datasets" class="text-sm text-green-600 font-bold">Datasets</a>
-                <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Organizations</a>
-                <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Groups</a>
-                <a href="/about" class="text-sm text-gray-700 dark:text-gray-300 font-medium">About</a>
-                <button onclick="window.location.href='{{ url('/login') }}'" class="w-full mt-2 bg-green-700 text-white px-5 py-3 rounded-xl font-medium">Login</button>
+            <nav class="hidden md:flex space-x-6">
+                <a href="/" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Home</a>
+                <a href="/datasets" class="text-sm text-green-600 font-bold transition">Datasets</a>
+                <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Organizations</a>
+                <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Groups</a>
+                <a href="/about" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">About</a>
+            </nav>
+
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <button onclick="window.location.href='{{ url('/login') }}'" class="hidden md:block bg-green-700 hover:bg-green-800 text-white px-5 py-2 rounded-full transition text-sm font-medium shadow-lg shadow-green-500/20">Login</button>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition focus:outline-none">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707-.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                </button>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                    <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
+        </div>
+
+        {{-- Mobile Dropdown dengan space --}}
+        <div x-show="mobileMenuOpen" x-transition class="md:hidden mt-4 pt-6 pb-6 border-t border-gray-200 dark:border-gray-700 flex flex-col space-y-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 shadow-xl">
+            <a href="/" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Home</a>
+            <a href="/datasets" class="text-sm text-green-600 font-bold">Datasets</a>
+            <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Organizations</a>
+            <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Groups</a>
+            <a href="/about" class="text-sm text-gray-700 dark:text-gray-300 font-medium">About</a>
+            <button onclick="window.location.href='{{ url('/login') }}'" class="w-full mt-2 bg-green-700 text-white px-5 py-3 rounded-xl font-bold">Login</button>
         </div>
     </header>
 
@@ -269,7 +303,7 @@
                 </div>
 
                 {{-- PAGINATION --}}
-                <div class="pagination flex justify-center mt-8 md:mt-10 mb-4 bg-white dark:bg-gray-900 p-3 rounded-2xl shadow-sm overflow-x-auto">
+                <div class="pagination w-full flex justify-center mt-8 md:mt-10 mb-4 bg-white dark:bg-gray-900 p-3 md:p-4 rounded-2xl shadow-sm overflow-x-auto">
                     {{ $latest_datasets->onEachSide(1)->appends(request()->query())->links() }}
                 </div>
             </div>
