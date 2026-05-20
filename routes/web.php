@@ -181,13 +181,22 @@ Route::get('/datasets', function () {
     // Query publik hanya mengambil status APPROVED
     $query = Dataset::where('status', 'approved');
     
-    if (request('search')) {
-        $query->where('name', 'like', '%' . request('search') . '%');
+    // 🔥 GANTI BAGIAN SEARCH INI 🔥
+    // Perbaikan: Menggunakan orWhere dalam closure agar bisa mencari DSSD dan lainnya
+    if (request('q')) { // <-- Menggunakan 'q' seperti di view blade Anda
+        $search = request('q');
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+              ->orWhere('dssd_code', 'like', '%' . $search . '%')
+              ->orWhere('tags', 'like', '%' . $search . '%')
+              ->orWhere('unit', 'like', '%' . $search . '%');
+        });
     }
     
     if (request('org')) { $query->where('user_id', request('org')); }
     if (request('year')) { $query->where('year_start', request('year')); }
 
+    // Pagination sudah benar menggunakan paginate()
     $latest_datasets = $query->latest()->paginate(10);
 
     return view('dataset.datasets', compact('stats', 'latest_datasets', 'organizations', 'years'));

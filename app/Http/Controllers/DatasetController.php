@@ -121,8 +121,16 @@ class DatasetController extends Controller
             $query->where('year_start', $request->year);
         }
 
+        // 🔥 GANTI BAGIAN SEARCH INI 🔥
+        // Perbaikan: Menggunakan orWhere dalam closure agar bisa mencari di banyak kolom (DSSD, nama, tags, satuan)
         if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('dssd_code', 'like', '%' . $search . '%')
+                  ->orWhere('tags', 'like', '%' . $search . '%')
+                  ->orWhere('unit', 'like', '%' . $search . '%');
+            });
         }
 
         $datasets = $query->latest()->paginate(10)->withQueryString();
