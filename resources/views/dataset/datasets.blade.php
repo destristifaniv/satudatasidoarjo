@@ -150,15 +150,15 @@
     </style>
 
     {{-- NAVBAR --}}
-    <header x-data="{ mobileMenuOpen: false }" class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:pt-5 transition-all duration-300">
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:pt-5 transition-all duration-300">
         <div class="max-w-6xl mx-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl md:rounded-full shadow-xl px-4 md:px-6 py-3 flex items-center justify-between border border-white/30 dark:border-gray-700">
-            <div class="flex items-center space-x-3 text-left">
+            <a href="/" class="flex items-center space-x-3 text-left group transition hover:text-green-600">
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain">
                 <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
                     <span class="block">Satu Data</span>
                     <span class="block text-[10px] md:text-sm font-semibold opacity-80">Kab. Sidoarjo</span>
                 </h1>
-            </div>
+            </a>
 
             <nav class="hidden md:flex space-x-6">
                 <a href="/" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Home</a>
@@ -176,19 +176,18 @@
                 </button>
                 <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
                     <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                    <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    <svg x-show="mobileMenuOpen" style="display: none;" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
         </div>
-
-        {{-- Mobile Dropdown dengan space --}}
-        <div x-show="mobileMenuOpen" x-transition class="md:hidden mt-4 pt-6 pb-6 border-t border-gray-200 dark:border-gray-700 flex flex-col space-y-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-6 shadow-xl">
-            <a href="/" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Home</a>
-            <a href="/datasets" class="text-sm text-green-600 font-bold">Datasets</a>
+        {{-- Mobile Menu --}}
+        <div x-show="mobileMenuOpen" x-transition class="md:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col space-y-3 pb-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-4 shadow-xl">
+            <a href="/" class="text-sm text-green-600 font-bold">Home</a>
+            <a href="/datasets" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Datasets</a>
             <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Organizations</a>
             <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Groups</a>
             <a href="/about" class="text-sm text-gray-700 dark:text-gray-300 font-medium">About</a>
-            <button onclick="window.location.href='{{ url('/login') }}'" class="w-full mt-2 bg-green-700 text-white px-5 py-3 rounded-xl font-bold">Login</button>
+            <button onclick="window.location.href='{{ url('/login') }}'" class="w-full mt-2 bg-green-700 text-white px-5 py-2.5 rounded-xl font-medium">Login</button>
         </div>
     </header>
 

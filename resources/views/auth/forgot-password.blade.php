@@ -1,30 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="relative h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 transition-colors duration-500 overflow-hidden">
+<div class="relative min-h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 sm:p-8 transition-colors duration-500 overflow-hidden">
     
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div class="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[100px] rounded-full"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-200/20 dark:bg-blue-900/10 blur-[100px] rounded-full"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[80px] md:blur-[100px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-blue-200/20 dark:bg-blue-900/10 blur-[80px] md:blur-[100px] rounded-full"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-[360px]">
+    <div class="relative z-10 w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px]">
         
         <a href="{{ route('login') }}" class="inline-flex items-center text-[9px] font-black uppercase tracking-[2px] text-gray-400 hover:text-green-600 transition-colors mb-4 ml-1 group">
             <span class="mr-1.5 group-hover:-translate-x-1 transition-transform">←</span> Back to Login
         </a>
 
-        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl rounded-[32px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800">
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800">
             
             <div class="text-center mb-6">
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" 
                      alt="Logo Kabupaten Sidoarjo" 
-                     class="w-14 h-14 mx-auto mb-4 object-contain drop-shadow-lg">
+                     class="w-12 h-12 md:w-14 md:h-14 mx-auto mb-4 object-contain drop-shadow-lg">
                 
-                <h1 class="text-2xl font-black text-gray-800 dark:text-white tracking-tighter leading-none">
+                <h1 class="text-xl md:text-2xl font-black text-gray-800 dark:text-white tracking-tighter leading-none">
                     Reset <span class="text-green-600">Password</span>
                 </h1>
-                <p class="text-[9px] text-gray-400 dark:text-gray-500 mt-2 font-bold uppercase tracking-[3px]">
+                <p class="text-[8px] md:text-[9px] text-gray-400 dark:text-gray-500 mt-2 font-bold uppercase tracking-[3px]">
                     Satu Data Sidoarjo
                 </p>
             </div>
@@ -43,21 +43,21 @@
                 @csrf
                 
                 <div class="space-y-1.5">
-                    <label for="email" class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
+                    <label for="email" class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block text-left">
                         Email Address
                     </label>
                     <input id="email" type="email" name="email" :value="old('email')" required autofocus
-                           class="w-full px-5 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-sm placeholder-gray-300 dark:placeholder-gray-600" 
+                           class="w-full px-4 py-3 md:px-5 md:py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-sm placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                            placeholder="name@example.com">
                     
                     @if ($errors->has('email'))
-                        <p class="text-[9px] text-red-500 font-bold ml-3 mt-1">{{ $errors->first('email') }}</p>
+                        <p class="text-[9px] text-red-500 font-bold ml-3 mt-1 text-left">{{ $errors->first('email') }}</p>
                     @endif
                 </div>
 
-                <div class="pt-2">
+                <div class="pt-2 text-center">
                     <button type="submit" 
-                            class="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black uppercase tracking-[2px] text-[10px] shadow-lg shadow-green-500/30 transition-all active:scale-[0.97]">
+                            class="w-full py-3.5 md:py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black uppercase tracking-[2px] text-[10px] md:text-[11px] shadow-lg shadow-green-500/30 transition-all active:scale-[0.97] text-center">
                         {{ __('Send Reset Link') }}
                     </button>
                 </div>
@@ -73,7 +73,7 @@
 <style>
     body {
         -webkit-font-smoothing: antialiased;
-        overflow: hidden;
+        overflow-x: hidden; /* Mengizinkan scroll vertikal pada mobile */
     }
 </style>
 @endsection

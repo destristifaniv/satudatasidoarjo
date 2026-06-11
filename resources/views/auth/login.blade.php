@@ -1,30 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="relative h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 transition-colors duration-500 overflow-hidden" x-data="{ showPassword: false }">
+<div class="relative min-h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 sm:p-8 transition-colors duration-500 overflow-hidden" x-data="{ showPassword: false }">
     
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div class="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[100px] rounded-full"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-200/20 dark:bg-blue-900/10 blur-[100px] rounded-full"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[80px] md:blur-[100px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-blue-200/20 dark:bg-blue-900/10 blur-[80px] md:blur-[100px] rounded-full"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-[360px]">
+    <div class="relative z-10 w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px]">
         
         <a href="/" class="inline-flex items-center text-[9px] font-black uppercase tracking-[2px] text-gray-400 hover:text-green-600 transition-colors mb-4 ml-1 group">
             <span class="mr-1.5 group-hover:-translate-x-1 transition-transform">←</span> Back to Portal
         </a>
 
-        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl rounded-[32px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800">
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl rounded-[32px] p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800">
             
             <div class="text-center mb-6">
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" 
                      alt="Logo Kabupaten Sidoarjo" 
-                     class="w-14 h-14 mx-auto mb-4 object-contain drop-shadow-lg">
+                     class="w-12 h-12 md:w-14 md:h-14 mx-auto mb-4 object-contain drop-shadow-lg">
                 
-                <h1 class="text-2xl font-black text-gray-800 dark:text-white tracking-tighter leading-none">
+                <h1 class="text-xl md:text-2xl font-black text-gray-800 dark:text-white tracking-tighter leading-none">
                     Portal <span class="text-green-600">Admin</span>
                 </h1>
-                <p class="text-[9px] text-gray-400 dark:text-gray-500 mt-2 font-bold uppercase tracking-[3px]">
+                <p class="text-[8px] md:text-[9px] text-gray-400 dark:text-gray-500 mt-2 font-bold uppercase tracking-[3px]">
                     SATU DATA KABUPATEN SIDOARJO
                 </p>
             </div>
@@ -56,7 +56,7 @@
                         Email Address
                     </label>
                     <input type="email" name="email" required value="{{ old('email') }}"
-                           class="w-full px-5 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-sm placeholder-gray-300 dark:placeholder-gray-600 text-left" 
+                           class="w-full px-4 py-3 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-sm placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                            placeholder="admin@sidoarjokab.go.id">
                 </div>
 
@@ -76,7 +76,7 @@
                             name="password"
                             required
                             placeholder="••••••••"
-                            class="w-full px-5 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white outline-none text-sm text-left"
+                            class="w-full px-4 py-3 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white outline-none text-sm text-left"
                         >
 
                         <button
@@ -86,7 +86,7 @@
                         >
 
                             <template x-if="!showPassword">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13.875 18.825A10.05 10.05 0 0112 19
@@ -104,7 +104,7 @@
                             </template>
 
                             <template x-if="showPassword">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5"
                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -122,7 +122,7 @@
 
                 <div class="pt-2 text-left">
                     <button type="submit" 
-                            class="w-full py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black uppercase tracking-[2px] text-xs shadow-lg shadow-green-500/30 transition-all active:scale-[0.97] text-center">
+                            class="w-full py-3.5 md:py-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black uppercase tracking-[2px] text-[11px] md:text-xs shadow-lg shadow-green-500/30 transition-all active:scale-[0.97] text-center">
                         Login
                     </button>
                 </div>
@@ -145,7 +145,7 @@
 <style>
     body {
         -webkit-font-smoothing: antialiased;
-        overflow: hidden;
+        overflow-x: hidden; /* Mengganti overflow: hidden agar tetap bisa di-scroll di layar HP yang lebih kecil */
     }
 </style>
 @endsection

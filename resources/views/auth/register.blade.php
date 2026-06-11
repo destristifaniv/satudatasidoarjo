@@ -1,31 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="relative h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 transition-colors duration-500 overflow-hidden" 
+<div class="relative min-h-screen flex items-center justify-center bg-[#F8F9FA] dark:bg-gray-950 p-4 sm:p-8 transition-colors duration-500 overflow-hidden" 
      x-data="{ showPass: false, showConfirm: false, selectedRole: 'opd' }">
     
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div class="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[100px] rounded-full"></div>
-        <div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-200/20 dark:bg-blue-900/10 blur-[100px] rounded-full"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-green-200/30 dark:bg-green-900/10 blur-[80px] md:blur-[100px] rounded-full"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[250px] h-[250px] md:w-[400px] md:h-[400px] bg-blue-200/20 dark:bg-blue-900/10 blur-[80px] md:blur-[100px] rounded-full"></div>
     </div>
 
-    <div class="relative z-10 w-full max-w-[400px]">
+    <div class="relative z-10 w-full max-w-[320px] sm:max-w-[360px] md:max-w-[400px]">
         
         <a href="{{ route('login') }}" class="inline-flex items-center text-[9px] font-black uppercase tracking-[2px] text-gray-400 hover:text-green-600 transition-colors mb-4 ml-1 group">
             <span class="mr-1.5 group-hover:-translate-x-1 transition-transform">←</span> Back to Login
         </a>
 
-        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl rounded-[32px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800">
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/40 dark:border-gray-800">
             
             <div class="text-center mb-6">
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" 
                      alt="Logo Kabupaten Sidoarjo" 
-                     class="w-12 h-12 mx-auto mb-3 object-contain drop-shadow-lg">
+                     class="w-12 h-12 md:w-14 md:h-14 mx-auto mb-3 object-contain drop-shadow-lg">
                 
-                <h1 class="text-2xl font-black text-gray-800 dark:text-white tracking-tighter leading-none">
+                <h1 class="text-xl md:text-2xl font-black text-gray-800 dark:text-white tracking-tighter leading-none">
                     Create <span class="text-green-600">Account</span>
                 </h1>
-                <p class="text-[9px] text-gray-400 dark:text-gray-500 mt-2 font-bold uppercase tracking-[3px]">
+                <p class="text-[8px] md:text-[9px] text-gray-400 dark:text-gray-500 mt-2 font-bold uppercase tracking-[3px]">
                     SATU DATA KABUPATEN SIDOARJO
                 </p>
             </div>
@@ -34,30 +34,31 @@
                 @csrf
                 
                 <div class="space-y-1">
-                    <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
+                    <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block text-left">
                         Full Name
                     </label>
                     <input type="text" name="name" required value="{{ old('name') }}"
-                           class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
+                           class="w-full px-4 py-2.5 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                            placeholder="Enter your name">
                 </div>
 
                 <div class="space-y-1">
-                    <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
+                    <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block text-left">
                         Email Address
                     </label>
                     <input type="email" name="email" required value="{{ old('email') }}"
-                           class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
+                           class="w-full px-4 py-2.5 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                            placeholder="admin@sidoarjokab.go.id">
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                {{-- Grid diubah menjadi grid-cols-1 di HP, dan grid-cols-2 di layar sm/md --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                     <div class="space-y-1">
                         <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
                             Pilih Role
                         </label>
                         <div class="relative">
-                            <select name="role" x-model="selectedRole" required class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs appearance-none cursor-pointer font-semibold">
+                            <select name="role" x-model="selectedRole" required class="w-full px-4 py-2.5 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs appearance-none cursor-pointer font-semibold text-left">
                                 <option value="opd">Staf / OPD</option>
                                 <option value="pimpinan">Pimpinan</option>
                                 <option value="admin">Administrator</option>
@@ -69,23 +70,24 @@
                     </div>
 
                     <div class="space-y-1" x-show="selectedRole === 'opd'" x-transition>
-                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block text-truncate" title="Nama Instansi (OPD)">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block truncate" title="Nama Instansi (OPD)">
                             Instansi (OPD)
                         </label>
                         <input type="text" name="opd_name" value="{{ old('opd_name') }}"
-                               class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
+                               class="w-full px-4 py-2.5 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                                placeholder="Contoh: BAPPEDA">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                {{-- Grid diubah menjadi grid-cols-1 di HP, dan grid-cols-2 di layar sm/md --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
                     <div class="space-y-1">
                         <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">
                             Password
                         </label>
                         <div class="relative group">
                             <input :type="showPass ? 'text' : 'password'" name="password" required 
-                                   class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
+                                   class="w-full px-4 py-2.5 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                                    placeholder="••••••••">
                             <button type="button" @click="showPass = !showPass" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors">
                                 <svg x-show="showPass" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,7 +107,7 @@
                         </label>
                         <div class="relative group">
                             <input :type="showConfirm ? 'text' : 'password'" name="password_confirmation" required 
-                                   class="w-full px-5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600" 
+                                   class="w-full px-4 py-2.5 md:px-5 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border-none focus:ring-2 focus:ring-green-500/20 text-gray-800 dark:text-white transition-all outline-none text-xs placeholder-gray-300 dark:placeholder-gray-600 text-left" 
                                    placeholder="••••••••">
                             <button type="button" @click="showConfirm = !showConfirm" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors">
                                 <svg x-show="showConfirm" xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -122,7 +124,7 @@
 
                 <div class="pt-3">
                     <button type="submit" 
-                            class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black uppercase tracking-[2px] text-[10px] shadow-lg shadow-green-500/30 transition-all active:scale-[0.97]">
+                            class="w-full py-3.5 bg-green-600 hover:bg-green-700 text-white rounded-2xl font-black uppercase tracking-[2px] text-[10px] md:text-xs shadow-lg shadow-green-500/30 transition-all active:scale-[0.97] text-center">
                         Register
                     </button>
                 </div>
@@ -145,7 +147,7 @@
 <style>
     body {
         -webkit-font-smoothing: antialiased;
-        overflow: hidden;
+        overflow-x: hidden; /* Mengizinkan scroll vertikal pada mobile */
     }
 </style>
 @endsection

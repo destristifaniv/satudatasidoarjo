@@ -17,13 +17,13 @@
     {{-- NAVBAR --}}
     <header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:pt-5 transition-all duration-300">
         <div class="max-w-6xl mx-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl md:rounded-full shadow-xl px-4 md:px-6 py-3 flex items-center justify-between border border-white/30 dark:border-gray-700">
-            <div class="flex items-center space-x-3 text-left">
+            <a href="/" class="flex items-center space-x-3 text-left group transition hover:text-green-600">
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain">
                 <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
                     <span class="block">Satu Data</span>
                     <span class="block text-[10px] md:text-sm font-semibold opacity-80">Kab. Sidoarjo</span>
                 </h1>
-            </div>
+            </a>
 
             <nav class="hidden md:flex space-x-6">
                 <a href="/" class="text-sm text-green-600 font-bold transition">Home</a>
@@ -112,9 +112,9 @@
             <div class="flex flex-col lg:flex-row gap-4 h-auto lg:h-32 transition-all duration-500 ease-in-out">
                 
                 {{-- 1. TOTAL DATASET --}}
-                <div @mouseenter="activeCard = 1" @mouseleave="activeCard = null" @click="activeCard = activeCard === 1 ? null : 1"
+                <a href="/datasets" title="Buka halaman Datasets" @mouseenter="activeCard = 1" @mouseleave="activeCard = null"
                      :class="activeCard === 1 ? 'lg:flex-[2.5] bg-blue-600 dark:bg-blue-700' : (activeCard === null ? 'lg:flex-1 bg-white/70 dark:bg-gray-900/60' : 'lg:flex-[0.5] opacity-50 bg-white/40 dark:bg-gray-900/30')"
-                     class="relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
+                     class="block relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
                     <div class="flex items-center space-x-3">
                         <div class="p-2.5 rounded-xl transition-colors duration-500" :class="activeCard === 1 ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-600'">📊</div>
                         <div class="flex flex-col">
@@ -127,12 +127,12 @@
                     <div x-show="activeCard === 1" x-transition.opacity.duration.500ms class="mt-3 text-blue-50 text-xs md:text-[11px] font-medium leading-tight">
                         Daftar dataset sektoral dari berbagai instansi pemerintah yang telah dipublikasikan.
                     </div>
-                </div>
+                </a>
 
                 {{-- 2. ORGANISASI OPD --}}
-                <div @mouseenter="activeCard = 2" @mouseleave="activeCard = null" @click="activeCard = activeCard === 2 ? null : 2"
+                <a href="/organizations" title="Buka halaman Organizations" @mouseenter="activeCard = 2" @mouseleave="activeCard = null"
                      :class="activeCard === 2 ? 'lg:flex-[2.5] bg-purple-600 dark:bg-purple-700' : (activeCard === null ? 'lg:flex-1 bg-white/70 dark:bg-gray-900/60' : 'lg:flex-[0.5] opacity-50 bg-white/40 dark:bg-gray-900/30')"
-                     class="relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
+                     class="block relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
                     <div class="flex items-center space-x-3">
                         <div class="p-2.5 rounded-xl transition-colors duration-500" :class="activeCard === 2 ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-600'">🏛️</div>
                         <div class="flex flex-col">
@@ -145,12 +145,12 @@
                     <div x-show="activeCard === 2" x-transition.opacity.duration.500ms class="mt-3 text-purple-50 text-xs md:text-[11px] font-medium leading-tight">
                         Sebanyak {{ $opdTerdaftar }} Organisasi Perangkat Daerah telah aktif berkontribusi.
                     </div>
-                </div>
+                </a>
 
                 {{-- 3. TOTAL DOWNLOAD --}}
-                <div @mouseenter="activeCard = 3" @mouseleave="activeCard = null" @click="activeCard = activeCard === 3 ? null : 3"
+                <a href="/datasets" title="Buka halaman Datasets" @mouseenter="activeCard = 3" @mouseleave="activeCard = null"
                      :class="activeCard === 3 ? 'lg:flex-[2.5] bg-orange-600 dark:bg-orange-700' : (activeCard === null ? 'lg:flex-1 bg-white/70 dark:bg-gray-900/60' : 'lg:flex-[0.5] opacity-50 bg-white/40 dark:bg-gray-900/30')"
-                     class="relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
+                     class="block relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
                     <div class="flex items-center space-x-3">
                         <div class="p-2.5 rounded-xl transition-colors duration-500" :class="activeCard === 3 ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-600'">📥</div>
                         <div class="flex flex-col">
@@ -163,12 +163,12 @@
                     <div x-show="activeCard === 3" x-transition.opacity.duration.500ms class="mt-3 text-orange-50 text-xs md:text-[11px] font-medium leading-tight">
                         Data telah diunduh sebanyak {{ $totalDownload }} kali oleh pengguna data.
                     </div>
-                </div>
+                </a>
 
                 {{-- 4. DATA TERVERIFIKASI --}}
-                <div @mouseenter="activeCard = 4" @mouseleave="activeCard = null" @click="activeCard = activeCard === 4 ? null : 4"
+                <a href="/datasets" title="Buka halaman Datasets" @mouseenter="activeCard = 4" @mouseleave="activeCard = null"
                      :class="activeCard === 4 ? 'lg:flex-[2.5] bg-green-600 dark:bg-green-700' : (activeCard === null ? 'lg:flex-1 bg-white/70 dark:bg-gray-900/60' : 'lg:flex-[0.5] opacity-50 bg-white/40 dark:bg-gray-900/30')"
-                     class="relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
+                     class="block relative overflow-hidden rounded-2xl md:rounded-[24px] shadow-lg md:shadow-xl border border-white/50 dark:border-gray-800 transition-all duration-500 ease-in-out cursor-pointer group p-4 flex flex-col justify-center">
                     <div class="flex items-center space-x-3">
                         <div class="p-2.5 rounded-xl transition-colors duration-500" :class="activeCard === 4 ? 'bg-white/20 text-white' : 'bg-green-100 text-green-600'">✅</div>
                         <div class="flex flex-col">
@@ -181,7 +181,7 @@
                     <div x-show="activeCard === 4" x-transition.opacity.duration.500ms class="mt-3 text-green-50 text-xs md:text-[11px] font-medium leading-tight">
                         Kualitas kelengkapan metadata mencapai standar validasi sebesar {{ $persentaseVerifikasi }}%.
                     </div>
-                </div>
+                </a>
 
             </div>
         </div>

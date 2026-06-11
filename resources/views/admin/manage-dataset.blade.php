@@ -3,7 +3,7 @@
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-<div class="flex h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 overflow-hidden" 
+<div class="flex min-h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 overflow-hidden relative" @resize.window="sidebarOpen = window.innerWidth >= 1024" 
      x-data="{ 
         sidebarOpen: window.innerWidth >= 1024, 
         searchQuery: '{{ request('search') }}',
@@ -63,7 +63,7 @@
      }">
     
     {{-- SIDEBAR --}}
-    <aside :class="sidebarOpen ? 'w-72' : 'w-0 md:w-20'" class="relative h-full bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col sticky top-0 z-50 shadow-xl overflow-hidden shrink-0">
+    <aside :class="sidebarOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full shadow-none'" class="fixed inset-y-0 left-0 z-50 w-72 transform overflow-hidden bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col lg:relative lg:translate-x-0 lg:w-72 lg:shadow-xl lg:sticky lg:top-0 lg:h-screen lg:z-auto">
         <div class="p-6 h-24 border-b border-teal-400/30 flex items-center justify-between overflow-hidden">
             <div class="flex items-center space-x-3 min-w-[180px]" x-show="sidebarOpen" x-transition>
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-10 h-10 object-contain rounded-xl shadow-lg bg-white/90 p-1">
@@ -107,13 +107,17 @@
     </aside>
 
     {{-- MAIN AREA --}}
-    <main class="flex-1 h-full overflow-y-auto relative p-6 lg:p-8 scroll-smooth text-left">
+    <main class="flex-1 min-h-screen overflow-y-auto relative p-4 sm:p-6 lg:p-8 scroll-smooth text-left">
         <div class="fixed top-0 right-0 w-[400px] h-[400px] bg-teal-200/20 dark:bg-teal-900/10 blur-[100px] rounded-full -z-10 opacity-50"></div>
         
         {{-- HEADER (DENGAN LONCENG NOTIFIKASI) --}}
         <header class="flex flex-col md:flex-row justify-between md:items-end mb-8 gap-4">
-            <div>
-                <h1 class="text-2xl font-black tracking-tight text-gray-900 dark:text-white uppercase leading-none text-left">Kelola <span class="text-teal-600">Dataset</span></h1>
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2.5 rounded-xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight text-gray-900 dark:text-white uppercase leading-none text-left">Kelola <span class="text-teal-600">Dataset</span></h1>
                 <p class="text-[9px] text-gray-400 font-black uppercase tracking-[0.2em] mt-2 text-left">Manajemen File & Konten Data Sektoral</p>
             </div>
 

@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="flex min-h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 overflow-hidden" 
-     x-data="{ sidebarOpen: window.innerWidth >= 1024 }">
+     x-data="{ sidebarOpen: window.innerWidth >= 1024 }" @resize.window="if (window.innerWidth >= 1024) sidebarOpen = true">
     
-    <aside :class="sidebarOpen ? 'w-72' : 'w-0 md:w-20'" class="relative bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col sticky top-0 h-screen z-50 shadow-xl overflow-hidden text-left">
-        <div class="p-6 h-24 border-b border-teal-400/30 flex items-center justify-between overflow-hidden">
+    <aside :class="sidebarOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full shadow-none'" class="fixed inset-y-0 left-0 z-50 w-72 transform overflow-hidden bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col lg:relative lg:translate-x-0 lg:shadow-xl lg:h-screen lg:w-72">
+        <div class="p-5 h-24 border-b border-teal-400/30 flex items-center justify-between overflow-hidden">
             <div class="flex items-center space-x-3 min-w-[180px]" x-show="sidebarOpen" x-transition>
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-10 h-10 object-contain rounded-xl shadow-lg bg-white/90 p-1">
                 <h2 class="text-xs font-black text-white leading-tight uppercase tracking-tighter text-left">Satu Data<br>Kabupaten Sidoarjo</h2>
             </div>
-            <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-xl hover:bg-teal-600/50 transition-colors shrink-0">
-                <svg :class="!sidebarOpen ? 'rotate-180' : ''" class="w-6 h-6 text-white transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button @click="sidebarOpen = !sidebarOpen" class="p-2 rounded-xl hover:bg-teal-600/50 transition-colors shrink-0 text-white">
+                <svg :class="sidebarOpen ? '' : 'rotate-180'" class="w-6 h-6 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                 </svg>
             </button>
@@ -41,14 +41,19 @@
         </nav>
     </aside>
 
-    {{-- Main Container: p-6 lg:p-8 untuk merampingkan jarak --}}
-    <main class="flex-1 h-screen overflow-y-auto p-6 lg:p-8 relative text-left transition-colors duration-500">
-        <header class="flex flex-col md:flex-row justify-between md:items-center mb-8 text-left">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-black tracking-tight leading-none text-left">
-                    Selamat Datang, <span class="text-teal-600">{{ Auth::user()->name }}</span> 👋
-                </h1>
-                <p class="text-[9px] md:text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] mt-2 leading-none text-left">Admin Dashboard • Satu Data Sidoarjo</p>
+    {{-- Main Container: p-4 sm:p-6 lg:p-8 untuk merampingkan jarak --}}
+    <main class="flex-1 min-h-screen lg:h-screen overflow-y-auto p-4 sm:p-6 lg:p-8 relative text-left transition-colors duration-500">
+        <header class="flex flex-col gap-4 md:flex-row justify-between md:items-center mb-8 text-left">
+            <div class="flex items-center gap-3">
+                <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2.5 rounded-xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-black tracking-tight leading-none text-left">
+                        Selamat Datang, <span class="text-teal-600">{{ Auth::user()->name }}</span> 👋
+                    </h1>
+                    <p class="text-[9px] md:text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] mt-2 leading-none text-left">Admin Dashboard • Satu Data Sidoarjo</p>
+                </div>
             </div>
             <div class="mt-4 md:mt-0 flex items-center">
                 <button id="theme-toggle" class="p-2.5 rounded-xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
@@ -59,7 +64,7 @@
         </header>
 
         {{-- Statistik Cards: Diperkecil padding dan ukuran teksnya --}}
-        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8 text-left">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 text-left">
             <div class="bg-white dark:bg-gray-900 p-5 rounded-[24px] shadow-sm border border-gray-100 dark:border-gray-800 hover:scale-[1.02] transition-all">
                 <p class="text-[9px] font-black uppercase tracking-widest text-teal-600 opacity-70 leading-none">Total Dataset</p>
                 <p class="text-3xl font-black mt-2 leading-none">{{ $stats['total_dataset'] ?? 0 }}</p>

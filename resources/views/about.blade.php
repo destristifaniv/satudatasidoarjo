@@ -6,17 +6,17 @@
     {{-- NAVBAR --}}
     <header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4 md:pt-5 transition-all duration-300">
         <div class="max-w-6xl mx-auto bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl md:rounded-full shadow-xl px-4 md:px-6 py-3 flex items-center justify-between border border-white/30 dark:border-gray-700">
-            <div class="flex items-center space-x-3 text-left">
+            <a href="/" class="flex items-center space-x-3 text-left group transition hover:text-green-600">
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-8 h-8 md:w-9 md:h-9 object-contain">
                 <h1 class="text-sm md:text-lg font-bold text-gray-800 dark:text-white leading-tight">
                     <span class="block">Satu Data</span>
                     <span class="block text-[10px] md:text-sm font-semibold opacity-80">Kab. Sidoarjo</span>
                 </h1>
-            </div>
+            </a>
 
             <nav class="hidden md:flex space-x-6">
                 <a href="/" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Home</a>
-                <a href="/datasets" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Datasets</a>
+                <a href="/datasets" class="text-sm text-green-600 font-bold transition">Datasets</a>
                 <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Organizations</a>
                 <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 hover:text-green-600 font-medium transition">Groups</a>
                 <a href="/about" class="text-sm text-green-600 font-bold transition">About</a>
@@ -36,7 +36,7 @@
         </div>
         {{-- Mobile Menu --}}
         <div x-show="mobileMenuOpen" x-transition class="md:hidden mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex flex-col space-y-3 pb-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl p-4 shadow-xl">
-            <a href="/" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Home</a>
+            <a href="/" class="text-sm text-green-600 font-bold">Home</a>
             <a href="/datasets" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Datasets</a>
             <a href="/organizations" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Organizations</a>
             <a href="/groups" class="text-sm text-gray-700 dark:text-gray-300 font-medium">Groups</a>
