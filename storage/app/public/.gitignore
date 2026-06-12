@@ -1,8 +1,8 @@
-storage/app/public/*
-!storage/app/public/.gitignore
-!storage/app/public/data/
-!storage/app/public/data/**
-!storage/app/public/datasets/
-!storage/app/public/datasets/**
-!storage/app/public/avatars/
-!storage/app/public/avatars/**
+*
+!.gitignore
+!data/
+!data/**
+!datasets/
+!datasets/**
+!avatars/
+!avatars/**

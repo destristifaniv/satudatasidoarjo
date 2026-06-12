@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div x-data="{ mobileMenuOpen: false }" class="relative min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden text-left">
+<div x-data="{ mobileMenuOpen: false }" class="relative min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overflow-x-hidden text-left flex flex-col">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -47,31 +47,31 @@
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto pt-32 pb-20 px-4 md:px-6">
+    <main class="flex-1 w-full max-w-6xl mx-auto pt-32 pb-10 px-4 md:px-6">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
             <div>
-                <h1 class="text-2xl md:text-4xl font-black text-gray-900 dark:text-white leading-none">{{ $organization->name }}</h1>
+                <h1 class="text-2xl md:text-4xl font-black text-gray-900 dark:text-white leading-none">{{ $organization->name ?? 'Instansi' }}</h1>
                 <p class="text-green-600 font-bold tracking-widest text-[10px] uppercase mt-2">Produsen Data Sektoral Aktif Sidoarjo</p>
             </div>
-            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 px-6 py-3 rounded-2xl shadow-sm text-center">
+            <div class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 px-6 py-3 rounded-2xl shadow-sm text-center w-full md:w-auto">
                 <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Total Dataset</p>
                 <p class="text-3xl font-black text-green-700">{{ $organization->datasets_count ?? 0 }}</p>
             </div>
         </div>
 
-        {{-- QUICK CARDS - Diubah menjadi sejajar (3 kolom) di semua device --}}
-        <div class="grid grid-cols-3 gap-2 md:gap-4 mb-8 px-2">
+        {{-- QUICK CARDS --}}
+        <div class="grid grid-cols-3 gap-3 md:gap-4 mb-8">
             @php 
                 $cards = [
                     ['title' => 'Data Terbaru', 'value' => $vol2024 ?? 0, 'color' => 'text-gray-900 dark:text-white'],
-                    ['title' => 'Pertumbuhan', 'value' => ($growth ?? 0 >= 0 ? '+' : '') . number_format($growth ?? 0, 0) . '%', 'color' => ($growth ?? 0) >= 0 ? 'text-green-600' : 'text-red-500'],
+                    ['title' => 'Pertumbuhan', 'value' => (($growth ?? 0) >= 0 ? '+' : '') . number_format($growth ?? 0, 0) . '%', 'color' => ($growth ?? 0) >= 0 ? 'text-green-600' : 'text-red-500'],
                     ['title' => 'Satuan', 'value' => $mostUsedUnit->unit ?? '-', 'color' => 'text-teal-600']
                 ];
             @endphp
             @foreach($cards as $card)
-            <div class="bg-white dark:bg-gray-900 p-3 md:p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm text-center">
+            <div class="bg-white dark:bg-gray-900 p-4 md:p-5 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm text-center">
                 <p class="text-[8px] md:text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">{{ $card['title'] }}</p>
-                <h2 class="text-sm md:text-2xl font-black {{ $card['color'] }} leading-tight truncate">{{ $card['value'] }}</h2>
+                <h2 class="text-base md:text-2xl font-black {{ $card['color'] }} leading-tight truncate">{{ $card['value'] }}</h2>
             </div>
             @endforeach
         </div>
@@ -87,7 +87,7 @@
                 <div class="grid grid-cols-3 gap-4">
                     @foreach(['2022', '2023', '2024'] as $yr)
                     <div class="flex flex-col items-center">
-                        <div class="w-24 h-24 sm:w-28 sm:h-28"><canvas id="donut{{ $yr }}"></canvas></div>
+                        <div class="w-20 h-20 sm:w-28 sm:h-28"><canvas id="donut{{ $yr }}"></canvas></div>
                         <p class="mt-3 text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ $yr }}</p>
                     </div>
                     @endforeach
@@ -96,30 +96,41 @@
         </div>
 
         {{-- MATRIKS KEGIATAN --}}
-        <div x-data="{ openModal: false }" class="bg-white dark:bg-gray-900 rounded-3xl p-6 border border-gray-100 dark:border-gray-800 shadow-sm mb-10 overflow-hidden mx-2 text-left">
+        <div x-data="{ openModal: false }" class="bg-white dark:bg-gray-900 rounded-3xl p-4 md:p-6 border border-gray-100 dark:border-gray-800 shadow-sm mb-10 text-left">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-black uppercase text-[10px] tracking-widest text-gray-900 dark:text-white">Matriks Keberlanjutan Program</h3>
-                {{-- <button @click="openModal = true" class="md:hidden text-[9px] font-bold text-green-700 uppercase bg-green-50 px-3 py-1 rounded-full">Detail</button> --}}
             </div>
 
-            {{-- Versi Laptop: Animasi Scroll (Sembunyi di HP dengan class hidden md:block) --}}
-            <div class="hidden md:block overflow-hidden border rounded-2xl dark:border-gray-800 shadow-inner relative h-[450px]">
-                <table class="w-full text-left absolute top-0 z-20 table-fixed">
-                    <thead class="bg-gray-50 dark:bg-gray-800">
-                        <tr class="text-[8px] font-black uppercase text-gray-400"><th class="px-6 py-3">Uraian Kegiatan</th><th class="py-3 text-center w-20">2022</th><th class="py-3 text-center w-20">2023</th><th class="py-3 text-center w-20">2024</th><th class="py-3 text-center w-40">Status</th></tr>
+            {{-- Versi Laptop: Auto-Scrolling Matriks --}}
+            <div class="hidden md:block overflow-hidden border rounded-2xl dark:border-gray-800 shadow-inner relative h-[450px] bg-white dark:bg-gray-900">
+                
+                {{-- Header Fixed --}}
+                <table class="w-full text-left absolute top-0 left-0 z-20 table-fixed border-b dark:border-gray-700 bg-gray-50/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-sm">
+                    <thead>
+                        <tr class="text-[8px] font-black uppercase text-gray-400">
+                            <th class="px-6 py-4">Uraian Kegiatan</th>
+                            <th class="py-4 text-center w-20">2022</th>
+                            <th class="py-4 text-center w-20">2023</th>
+                            <th class="py-4 text-center w-20">2024</th>
+                            <th class="py-4 text-center w-32">Status</th>
+                        </tr>
                     </thead>
                 </table>
-                <div class="pt-[42px] h-full overflow-hidden">
-                    <div class="animate-scroll">
+
+                {{-- Body Scrolling Infinite --}}
+                <div class="pt-[48px] h-full overflow-hidden relative group">
+                    {{-- Saat di-hover, animasi akan pause (didefinisikan di CSS) --}}
+                    <div class="animate-scroll-y w-full">
                         <table class="w-full border-collapse table-fixed">
                             <tbody class="divide-y dark:divide-gray-800">
+                                {{-- Kita menggunakan array_merge agar data terduplikasi untuk efek looping infinite --}}
                                 @foreach(array_merge($allActivityNames ?? [], $allActivityNames ?? []) as $name)
-                                <tr class="hover:bg-teal-50/50 dark:hover:bg-gray-800 h-[50px]">
-                                    <td class="px-6 py-3 text-[10px] font-black text-gray-700 dark:text-gray-300 truncate">{{ $name }}</td>
-                                    <td class="text-center w-20 font-bold text-green-500">{!! isset($activities2022[$name]) ? '✔' : '<span class="opacity-10">—</span>' !!}</td>
-                                    <td class="text-center w-20 font-bold text-green-500">{!! isset($activities2023[$name]) ? '✔' : '<span class="opacity-10">—</span>' !!}</td>
-                                    <td class="text-center w-20 font-bold text-green-500">{!! isset($activities2024[$name]) ? '✔' : '<span class="opacity-10">—</span>' !!}</td>
-                                    <td class="text-center w-40 text-xs">...</td>
+                                <tr class="hover:bg-teal-50/50 dark:hover:bg-gray-800/50 transition-colors h-[52px]">
+                                    <td class="px-6 py-2 text-[10px] font-bold text-gray-700 dark:text-gray-300 leading-snug truncate" title="{{ $name }}">{{ $name }}</td>
+                                    <td class="text-center w-20 text-sm font-bold text-green-500">{!! isset($activities2022[$name]) ? '✔' : '<span class="opacity-20 text-gray-400">—</span>' !!}</td>
+                                    <td class="text-center w-20 text-sm font-bold text-green-500">{!! isset($activities2023[$name]) ? '✔' : '<span class="opacity-20 text-gray-400">—</span>' !!}</td>
+                                    <td class="text-center w-20 text-sm font-bold text-green-500">{!! isset($activities2024[$name]) ? '✔' : '<span class="opacity-20 text-gray-400">—</span>' !!}</td>
+                                    <td class="text-center w-32 text-xs text-gray-400 tracking-widest">...</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -128,56 +139,99 @@
                 </div>
             </div>
 
-            {{-- Versi Mobile: Tampil 5 data saja (Sembunyi di Laptop dengan class md:hidden) --}}
-    <div class="md:hidden space-y-3">
-        @foreach(array_slice($allActivityNames ?? [], 0, 5) as $name)
-            <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl flex justify-between items-center">
-                <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300 truncate pr-2">{{ $name }}</span>
-                @if(isset($activities2024[$name]))
-                    <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[8px] font-black uppercase rounded-md">On</span>
-                @else
-                    <span class="px-2 py-0.5 bg-gray-200 text-gray-500 text-[8px] font-black uppercase rounded-md">Off</span>
-                @endif
+            {{-- Versi Mobile: Auto-Scrolling (tampilkan 5, digandakan untuk loop) --}}
+            <div class="md:hidden">
+                @php $mobileItems = array_slice($allActivityNames ?? [], 0, 5); @endphp
+                <div class="overflow-hidden relative h-[280px] border rounded-2xl dark:border-gray-800 shadow-inner bg-white dark:bg-gray-900">
+                    <div class="pt-2 h-full">
+                        <div class="animate-scroll-y">
+                            @foreach(array_merge($mobileItems, $mobileItems) as $name)
+                                <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl flex justify-between items-center border border-gray-100 dark:border-gray-700 m-3">
+                                    <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300 truncate pr-2 flex-1">{{ $name }}</span>
+                                    @if(isset($activities2024[$name]))
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 text-[8px] font-black uppercase rounded-md shrink-0">On</span>
+                                    @else
+                                        <span class="px-2 py-1 bg-gray-200 text-gray-500 text-[8px] font-black uppercase rounded-md shrink-0">Off</span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
             </div>
-        @endforeach
-    </div>
 
-    {{-- TOMBOL LIHAT SEMUA (Tampil di HP) --}}
-    <button @click="openModal = true" class="md:hidden mt-4 w-full py-3 border border-gray-200 dark:border-gray-700 rounded-xl text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-        Lihat Semua Matriks
-    </button>
+            {{-- TOMBOL LIHAT SEMUA (Tampil di HP) --}}
+            <button @click="openModal = true" class="md:hidden mt-4 w-full py-3.5 border border-gray-200 dark:border-gray-700 rounded-xl text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-gray-800 transition active:scale-95">
+                Lihat Semua Matriks
+            </button>
 
-    {{-- MODAL LENGKAP --}}
-    <div x-show="openModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" style="display: none;">
-        <div @click.away="openModal = false" class="bg-white dark:bg-gray-900 rounded-3xl p-6 w-full max-h-[80vh] overflow-y-auto border dark:border-gray-800 shadow-2xl">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-black uppercase text-xs tracking-widest">Matriks Lengkap</h3>
-                <button @click="openModal = false" class="text-xl font-bold bg-gray-100 dark:bg-gray-800 w-8 h-8 rounded-full">✕</button>
+            {{-- MODAL LENGKAP --}}
+            <div x-show="openModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" style="display: none;" x-cloak>
+                <div @click.away="openModal = false" class="bg-white dark:bg-gray-900 rounded-3xl p-6 w-full max-h-[80vh] overflow-y-auto custom-scrollbar border dark:border-gray-800 shadow-2xl relative">
+                    <div class="flex justify-between items-center mb-6 sticky top-0 bg-white dark:bg-gray-900 z-10 py-2">
+                        <h3 class="font-black uppercase text-[10px] tracking-widest text-teal-600">Matriks Lengkap</h3>
+                        <button @click="openModal = false" class="text-sm font-bold text-gray-500 bg-gray-100 dark:bg-gray-800 hover:bg-red-100 hover:text-red-500 w-8 h-8 rounded-full transition-colors flex items-center justify-center">✕</button>
+                    </div>
+                    <table class="w-full text-left">
+                        <thead class="text-[9px] font-black uppercase text-gray-400 tracking-widest">
+                            <tr><th class="pb-3 border-b dark:border-gray-700">Kegiatan</th><th class="pb-3 text-center border-b dark:border-gray-700 w-16">Status</th></tr>
+                        </thead>
+                        <tbody class="divide-y dark:divide-gray-800">
+                            @foreach($allActivityNames ?? [] as $name)
+                                <tr class="text-[10px]">
+                                    <td class="py-3 font-bold text-gray-700 dark:text-gray-300">{{ $name }}</td>
+                                    <td class="text-center py-3">
+                                        @if(isset($activities2024[$name]))
+                                            <span class="px-2 py-1 bg-green-100 text-green-700 font-black rounded-md text-[8px] uppercase">On</span>
+                                        @else
+                                            <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-400 font-black rounded-md text-[8px] uppercase">Off</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <table class="w-full text-left">
-                <thead class="text-[9px] uppercase text-gray-400">
-                    <tr><th class="pb-3">Kegiatan</th><th class="pb-3 text-center">Status</th></tr>
-                </thead>
-                <tbody class="divide-y dark:divide-gray-800">
-                    @foreach($allActivityNames ?? [] as $name)
-                        <tr class="text-[11px]">
-                            <td class="py-3 font-medium">{{ $name }}</td>
-                            <td class="text-center">
-                                @if(isset($activities2024[$name]))
-                                    <span class="px-2 py-1 bg-green-100 text-green-700 font-black rounded-md text-[8px] uppercase">On</span>
-                                @else
-                                    <span class="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-400 font-black rounded-md text-[8px] uppercase">Off</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
         </div>
     </main>
+
+    <footer class="py-8 border-t border-gray-100 dark:border-gray-900 text-center shrink-0">
+        <p class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] md:tracking-[0.4em]">© {{ date('Y') }} PEMKAB SIDOARJO • PORTAL SATU DATA</p>
+    </footer>
 </div>
+
+<style>
+    /* KEYFRAMES AUTO-SCROLL VERTIKAL */
+    @keyframes autoScrollY {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-50%); }
+    }
+
+    /* CLASS ANIMASI SCROLL
+       Gunakan variabel --scroll-duration untuk mengatur kecepatan.
+       Default diperlambat menjadi 120 detik untuk efek lebih lambat.
+    */
+    .animate-scroll-y {
+        animation: autoScrollY var(--scroll-duration, 120s) linear infinite;
+        will-change: transform;
+    }
+
+    /* Jeda saat di-hover (desktop) */
+    .group:hover .animate-scroll-y {
+        animation-play-state: paused;
+    }
+
+    /* Untuk menonaktifkan animasi ketika konten tidak perlu di-scroll */
+    .no-animation .animate-scroll-y { animation: none !important; }
+
+    /* Styling scrollbar untuk modal di HP */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #475569; }
+    [x-cloak] { display: none !important; }
+</style>
 
 <script>
     const baseOptions = { plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false };
@@ -193,9 +247,37 @@
             options: { ...baseOptions, cutout: '75%' }
         });
     };
-    // Perbaikan: Tambahkan pengecekan agar tidak error jika data kosong
-    @if(isset($units2022)) setupDonut('donut2022', {!! json_encode($units2022->pluck('unit')) !!}, {!! json_encode($units2022->pluck('total')) !!}); @endif
-    @if(isset($units2023)) setupDonut('donut2023', {!! json_encode($units2023->pluck('unit')) !!}, {!! json_encode($units2023->pluck('total')) !!}); @endif
-    @if(isset($units2024)) setupDonut('donut2024', {!! json_encode($units2024->pluck('unit')) !!}, {!! json_encode($units2024->pluck('total')) !!}); @endif
+    @if(isset($units2022)) setupDonut('donut2022', {!! json_encode($units2022->pluck('unit') ?? []) !!}, {!! json_encode($units2022->pluck('total') ?? []) !!}); @endif
+    @if(isset($units2023)) setupDonut('donut2023', {!! json_encode($units2023->pluck('unit') ?? []) !!}, {!! json_encode($units2023->pluck('total') ?? []) !!}); @endif
+    @if(isset($units2024)) setupDonut('donut2024', {!! json_encode($units2024->pluck('unit') ?? []) !!}, {!! json_encode($units2024->pluck('total') ?? []) !!}); @endif
+</script>
+
+<script>
+    // Pause/resume auto-scroll on hover/touch and disable when not needed
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.animate-scroll-y').forEach(function (el) {
+            // parent container that defines visible window
+            const container = el.parentElement;
+            if (!container) return;
+
+            // If content doesn't overflow, disable animation
+            if (el.scrollHeight <= container.clientHeight) {
+                el.style.animation = 'none';
+                return;
+            }
+
+            // Ensure animation is running by default
+            el.style.animationPlayState = 'running';
+
+            // Pause on pointer/touch interactions
+            const pause = () => el.style.animationPlayState = 'paused';
+            const resume = () => el.style.animationPlayState = 'running';
+
+            ['mouseenter', 'pointerenter'].forEach(evt => container.addEventListener(evt, pause));
+            ['mouseleave', 'pointerleave'].forEach(evt => container.addEventListener(evt, resume));
+            ['touchstart', 'pointerdown'].forEach(evt => container.addEventListener(evt, pause, { passive: true }));
+            ['touchend', 'pointerup'].forEach(evt => container.addEventListener(evt, resume, { passive: true }));
+        });
+    });
 </script>
 @endsection
