@@ -181,7 +181,6 @@ Route::get('/datasets', function () {
     // Query publik hanya mengambil status APPROVED
     $query = Dataset::where('status', 'approved');
     
-    // 🔥 GANTI BAGIAN SEARCH INI 🔥
     // Perbaikan: Menggunakan orWhere dalam closure agar bisa mencari DSSD dan lainnya
     if (request('q')) { // <-- Menggunakan 'q' seperti di view blade Anda
         $search = request('q');

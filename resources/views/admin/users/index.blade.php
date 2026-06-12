@@ -1,260 +1,342 @@
 @extends('layouts.app')
 
 @section('content')
-{{-- Container utama dikunci tingginya seukuran layar dan overflow-hidden --}}
-<div class="container mx-auto px-2 sm:px-4 max-w-7xl flex flex-col min-h-screen sm:h-[calc(100vh-1rem)] py-2 sm:py-4 overflow-hidden">
+<div class="flex min-h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 overflow-hidden relative" 
+     x-data="{ sidebarOpen: false }">
     
-    {{-- HEADER SECTION --}}
-    <div class="shrink-0 flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-6 gap-2 sm:gap-0">
-        <div>
-            <h2 class="text-xl sm:text-3xl font-extrabold text-gray-800 dark:text-white flex items-center gap-2">
-                <svg class="w-6 sm:w-8 h-6 sm:h-8 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <span class="truncate">Manajemen Akses & Akun</span>
-            </h2>
-            <p class="text-xs sm:text-sm text-gray-500 font-medium mt-0.5 sm:mt-1">Kelola akun administrator, pimpinan, dan staf OPD.</p>
-        </div>
+    <div class="fixed top-0 right-0 w-[400px] h-[400px] bg-teal-200/20 dark:bg-teal-900/10 blur-[100px] rounded-full -z-10 opacity-50"></div>
+    
+    <main class="flex-1 h-screen overflow-hidden flex flex-col relative p-4 sm:p-6 lg:p-8">
         
-        {{-- TOMBOL LOGOUT --}}
-        <div class="mt-2 sm:mt-0">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="w-full sm:w-auto flex items-center justify-center px-3 sm:px-4 py-1.5 sm:py-2 bg-red-50 hover:bg-red-500 text-red-600 hover:text-white rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm transition-all border border-red-200 hover:border-red-500 shadow-sm">
-                    <svg class="w-3 sm:w-4 h-3 sm:h-4 mr-1.5 sm:mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    <span class="truncate">Logout / Keluar</span>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    {{-- NOTIFIKASI --}}
-    @if(session('success'))
-        <div class="shrink-0 bg-emerald-50 border-l-4 border-emerald-500 p-2.5 sm:p-4 rounded-r-lg mb-3 sm:mb-6 shadow-sm flex items-center text-xs sm:text-sm">
-            <svg class="w-4 sm:w-5 h-4 sm:h-5 text-emerald-500 mr-1.5 sm:mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-            <p class="text-emerald-700 font-bold">{{ session('success') }}</p>
-        </div>
-    @endif
-    @if($errors->any())
-        <div class="shrink-0 bg-red-50 border-l-4 border-red-500 p-2.5 sm:p-4 rounded-r-lg mb-3 sm:mb-6 shadow-sm text-xs sm:text-sm">
-            <div class="flex items-center mb-1">
-                <svg class="w-4 sm:w-5 h-4 sm:h-5 text-red-500 mr-1.5 sm:mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                <p class="text-red-700 font-bold">Terjadi Kesalahan!</p>
+        {{-- HEADER --}}
+        <header class="mb-4 sm:mb-6 flex flex-col md:flex-row justify-between md:items-center gap-3 sm:gap-4 max-w-7xl mx-auto w-full shrink-0">
+            <div>
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight text-gray-900 dark:text-white uppercase leading-none">
+                    Manajemen <span class="text-teal-600">Akses & Akun</span>
+                </h1>
+                <p class="text-[8px] sm:text-[9px] text-gray-400 font-black uppercase tracking-[0.3em] mt-1.5">Kelola akun administrator, pimpinan, dan staf OPD</p>
             </div>
-            <ul class="list-disc pl-5 sm:pl-7 text-red-600 font-medium space-y-0.5">
-                @foreach($errors->all() as $error) <li class="text-[10px] sm:text-xs">{{ $error }}</li> @endforeach
-            </ul>
-        </div>
-    @endif
+            
+            <a href="{{ route('admin.dashboard') }}" class="w-full md:w-auto px-4 sm:px-5 py-2 sm:py-2.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-xl border border-white dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl font-black text-[8px] sm:text-[9px] uppercase tracking-widest hover:bg-gray-100 transition-all shadow-sm text-center">
+                ← Kembali ke Dashboard
+            </a>
+        </header>
 
-    {{-- GRID UTAMA --}}
-    <div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-8 pb-2 sm:pb-4 overflow-hidden">
-        
-        {{-- BAGIAN KIRI: Form Tambah User (Dibuat lebih ringkas, tanpa scrollbar) --}}
-        <div class="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none p-3 sm:p-6 border border-gray-100 dark:border-gray-700 h-fit relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-20 sm:w-32 h-20 sm:h-32 bg-green-50 dark:bg-gray-700/30 rounded-bl-full -z-10"></div>
-            
-            <h3 class="text-base sm:text-lg font-extrabold mb-3 sm:mb-5 text-gray-800 dark:text-white flex items-center gap-2">
-                <span class="bg-green-100 text-green-600 p-1.5 sm:p-2 rounded-lg sm:rounded-xl flex-shrink-0"><svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></span>
-                <span class="truncate">Buat Akun Baru</span>
-            </h3>
-            
-            {{-- Spasi antar input dikurangi (space-y-2 sm:space-y-3) agar lebih fit di layar --}}
-            <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-2 sm:space-y-3">
-                @csrf
-                <div>
-                    <label class="block text-[9px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Nama Lengkap / Jabatan <span class="text-red-500">*</span></label>
-                    <input type="text" name="name" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-xs sm:text-sm transition-all shadow-sm py-1.5 sm:py-2" placeholder="">
+        {{-- NOTIFIKASI --}}
+        <div class="max-w-7xl mx-auto w-full shrink-0">
+            @if(session('success'))
+                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl mb-6 shadow-sm flex items-center">
+                    <svg class="w-5 h-5 text-emerald-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <p class="text-[11px] sm:text-sm text-emerald-700 font-bold">{{ session('success') }}</p>
                 </div>
-                <div>
-                    <label class="block text-[9px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Email Login <span class="text-red-500">*</span></label>
-                    <input type="email" name="email" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-xs sm:text-sm transition-all shadow-sm py-1.5 sm:py-2" placeholder="">
+            @endif
+            
+            @if($errors->any())
+                <div class="bg-red-50 border border-red-200 p-4 rounded-2xl mb-6 shadow-sm">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-5 h-5 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                        <p class="text-[11px] sm:text-sm text-red-700 font-bold">Terjadi Kesalahan!</p>
+                    </div>
+                    <ul class="list-disc pl-7 text-red-600 font-medium space-y-1">
+                        @foreach($errors->all() as $error) <li class="text-[10px] sm:text-xs">{{ $error }}</li> @endforeach
+                    </ul>
                 </div>
+            @endif
+        </div>
+
+        {{-- GRID UTAMA (KUNCI SCROLL) --}}
+        <div class="flex-1 min-h-0 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 pb-4">
+            
+            {{-- KOLOM KIRI: FORM BUAT AKUN (TIDAK SCROLL) --}}
+            <div class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl rounded-[32px] shadow-lg border border-white dark:border-gray-800 p-6 sm:p-8 h-fit relative overflow-hidden z-10 hidden lg:block">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-teal-200/20 dark:bg-teal-900/10 rounded-bl-full -z-10 blur-xl"></div>
                 
-                {{-- FIELD PASSWORD --}}
-                <div x-data="{ showPassword: false }">
-                    <label class="block text-[9px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Password Default <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                        <input :type="showPassword ? 'text' : 'password'" name="password" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-xs sm:text-sm transition-all shadow-sm py-1.5 sm:py-2 pr-8" placeholder="••••••••">
-                        <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-0 px-2 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none">
-                            <svg x-show="!showPassword" class="w-3.5 sm:w-4 h-3.5 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                            <svg x-show="showPassword" x-cloak class="w-3.5 sm:w-4 h-3.5 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                <h3 class="text-base sm:text-lg font-extrabold mb-6 text-gray-800 dark:text-white flex items-center gap-3">
+                    <span class="bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 p-2 rounded-xl flex-shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    </span>
+                    <span class="truncate">Buat Akun Baru</span>
+                </h3>
+                
+                <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
+                    @csrf
+                    
+                    <div class="space-y-1.5 group">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Nama Lengkap / Jabatan <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm">
+                    </div>
+                    
+                    <div class="space-y-1.5 group">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Email Login <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm">
+                    </div>
+                    
+                    <div class="space-y-1.5 group" x-data="{ showPassword: false }">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Password Default <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input :type="showPassword ? 'text' : 'password'" name="password" required class="w-full pl-5 pr-12 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm" placeholder="••••••••">
+                            <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-teal-600 focus:outline-none transition-colors">
+                                <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                <svg x-show="showPassword" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5 group">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Hak Akses (Role) <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <select name="role" required class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm font-bold transition-all shadow-sm appearance-none cursor-pointer">
+                                <option value="opd">OPD (Staf / Operator)</option>
+                                <option value="pimpinan">Pimpinan (Camat / Kadis)</option>
+                                <option value="admin">Super Admin (Kominfo)</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1.5 group pt-1">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Nama Instansi (OPD)</label>
+                        <input type="text" name="opd_name" class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm">
+                        <p class="text-[9px] text-orange-500 font-bold mt-2 ml-3 leading-tight flex items-start gap-1">
+                            <svg class="w-3 h-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg> 
+                            <span>Wajib diisi identik untuk Staf dan Pimpinannya.</span>
+                        </p>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-gray-100 dark:border-gray-800/60 mt-4">
+                        <button type="submit" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-teal-500/30 active:scale-[0.98] transition-all flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                            Simpan Akun
                         </button>
                     </div>
-                </div>
-
-                <div>
-                    <label class="block text-[9px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Hak Akses (Role) <span class="text-red-500">*</span></label>
-                    <select name="role" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-xs sm:text-sm font-medium transition-all shadow-sm py-1.5 sm:py-2 cursor-pointer">
-                        <option value="opd">OPD (Staf / Operator)</option>
-                        <option value="pimpinan">Pimpinan (Camat / Kadis)</option>
-                        <option value="admin">Super Admin (Kominfo)</option>
-                    </select>
-                </div>
-                <div class="pt-0.5 sm:pt-1">
-                    <label class="block text-[9px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Nama Instansi (OPD)</label>
-                    <input type="text" name="opd_name" class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-green-500 focus:ring-green-500 text-xs sm:text-sm transition-all shadow-sm py-1.5 sm:py-2 bg-gray-50 dark:bg-gray-800" placeholder="">
-                    <p class="text-[8px] sm:text-[9px] text-orange-500 font-bold mt-1 leading-tight flex items-start gap-1"><svg class="w-2.5 sm:w-3 h-2.5 sm:h-3 mr-0.5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg> <span>Wajib diisi identik untuk Staf dan Pimpinannya.</span></p>
-                </div>
-                <button type="submit" class="w-full mt-1 sm:mt-2 bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 text-white font-extrabold py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl transition-all shadow-lg shadow-green-500/30 hover:shadow-green-500/50 hover:-translate-y-0.5 flex items-center justify-center text-xs sm:text-base">
-                    <svg class="w-4 sm:w-5 h-4 sm:h-5 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-                    Simpan Akun
-                </button>
-            </form>
-        </div>
-
-        {{-- Tabel Daftar User Sistem --}}
-        <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-gray-700 flex flex-col h-full overflow-hidden">
-            
-            {{-- Judul Tabel --}}
-            <div class="shrink-0 p-3 sm:p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50 gap-2">
-                <h3 class="text-sm sm:text-lg font-extrabold text-gray-800 dark:text-white truncate">Daftar Pengguna Sistem</h3>
-                <span class="bg-white dark:bg-gray-700 text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-gray-200 dark:border-gray-600 shadow-sm whitespace-nowrap flex-shrink-0">{{ $users->count() }} Akun</span>
+                </form>
             </div>
-            
-            {{-- AREA SCROLL: Ini satu-satunya area yang bisa digulir ke bawah --}}
-            <div class="flex-1 overflow-y-auto overflow-x-auto p-2 sm:p-4 custom-scrollbar">
-                <table class="w-full text-left border-separate border-spacing-y-1 sm:border-spacing-y-2">
-                    <thead class="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-sm">
-                        <tr class="text-gray-400 dark:text-gray-500 text-[8px] sm:text-[10px] uppercase tracking-wider font-black">
-                            <th class="px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-100 dark:border-gray-700">Profil Pengguna</th>
-                            <th class="px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-100 dark:border-gray-700">Role</th>
-                            <th class="px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-100 dark:border-gray-700 hidden sm:table-cell">Instansi Terkait</th>
-                            <th class="px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-100 dark:border-gray-700 text-center">Tindakan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($users as $u)
-                        <tr class="bg-white dark:bg-gray-800 shadow-sm border border-gray-100 dark:border-gray-700 rounded-lg sm:rounded-xl transition-all hover:shadow-md hover:border-green-200 dark:hover:border-green-900 group">
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 rounded-l-lg sm:rounded-l-xl border-y border-l border-gray-100 dark:border-gray-700 group-hover:border-green-200">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <div class="w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0 shadow-inner text-xs sm:text-base {{ $u->role == 'admin' ? 'bg-gradient-to-br from-red-400 to-rose-600' : ($u->role == 'pimpinan' ? 'bg-gradient-to-br from-blue-400 to-indigo-600' : 'bg-gradient-to-br from-emerald-400 to-green-600') }}">
-                                        {{ substr($u->name, 0, 1) }}
-                                    </div>
-                                    <div class="min-w-0">
-                                        <p class="text-[10px] sm:text-sm font-extrabold text-gray-800 dark:text-gray-100 truncate">{{ $u->name }}</p>
-                                        <p class="text-[8px] sm:text-[11px] text-gray-500 font-medium truncate">{{ $u->email }}</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 border-y border-gray-100 dark:border-gray-700 group-hover:border-green-200">
-                                @if($u->role == 'admin')
-                                    <span class="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-red-50 text-red-600 border border-red-200 rounded text-[8px] sm:text-[10px] font-black uppercase tracking-widest flex w-fit items-center gap-0.5 sm:gap-1.5"><span class="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-red-500 flex-shrink-0"></span><span class="truncate">ADMIN</span></span>
-                                @elseif($u->role == 'pimpinan')
-                                    <span class="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-blue-50 text-blue-600 border border-blue-200 rounded text-[8px] sm:text-[10px] font-black uppercase tracking-widest flex w-fit items-center gap-0.5 sm:gap-1.5"><span class="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span><span class="truncate">PIMPINAN</span></span>
-                                @else
-                                    <span class="px-1.5 sm:px-2.5 py-0.5 sm:py-1 bg-green-50 text-green-600 border border-green-200 rounded text-[8px] sm:text-[10px] font-black uppercase tracking-widest flex w-fit items-center gap-0.5 sm:gap-1.5"><span class="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-green-500 flex-shrink-0"></span><span class="truncate">OPD / STAF</span></span>
-                                @endif
-                            </td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 border-y border-gray-100 dark:border-gray-700 group-hover:border-green-200 hidden sm:table-cell">
-                                @if(empty($u->opd_name) || $u->opd_name == 'null' || $u->opd_name == '')
-                                    <span class="text-[9px] sm:text-xs font-bold text-gray-400 bg-gray-50 dark:bg-gray-700 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded border border-gray-200 dark:border-gray-600 italic">Pusat / Kosong</span>
-                                @else
-                                    <span class="text-[9px] sm:text-xs font-bold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded border border-gray-300 dark:border-gray-600 truncate">{{ $u->opd_name }}</span>
-                                @endif
-                            </td>
-                            <td class="px-2 sm:px-4 py-2 sm:py-3 rounded-r-lg sm:rounded-r-xl border-y border-r border-gray-100 dark:border-gray-700 group-hover:border-green-200 text-center">
-                                <div class="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    {{-- Tombol Edit Modal --}}
-                                    <button type="button" onclick="openEditModal({{ json_encode($u) }})" class="p-1 sm:p-1.5 bg-blue-50 hover:bg-blue-500 text-blue-600 hover:text-white rounded text-sm:rounded-lg transition-colors border border-blue-200 hover:border-blue-500 tooltip flex-shrink-0" title="Edit Akun">
-                                        <svg class="w-3 sm:w-4 h-3 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                    </button>
 
-                                    @if($u->id !== auth()->user()->id)
-                                    <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST" onsubmit="return confirm('Yakin menghapus permanen akun {{ $u->name }}?');" class="flex-shrink-0">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="p-1 sm:p-1.5 bg-red-50 hover:bg-red-500 text-red-600 hover:text-white rounded sm:rounded-lg transition-colors border border-red-200 hover:border-red-500 tooltip" title="Hapus Akun">
-                                            <svg class="w-3 sm:w-4 h-3 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                        </button>
-                                    </form>
+            {{-- KOLOM KANAN: TABEL PENGGUNA (BISA DI SCROLL) --}}
+            <div class="lg:col-span-2 bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl rounded-[32px] shadow-lg border border-white dark:border-gray-800 overflow-hidden flex flex-col z-10 h-full">
+                
+                {{-- Table Header Fixed --}}
+                <div class="px-6 sm:px-8 py-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50 flex justify-between items-center shrink-0">
+                    <h3 class="text-base sm:text-lg font-black text-gray-800 dark:text-white truncate">Daftar Pengguna Sistem</h3>
+                    <span class="bg-white dark:bg-gray-800 text-[9px] sm:text-[10px] font-black tracking-widest uppercase px-3 sm:px-4 py-1.5 rounded-full border border-gray-100 dark:border-gray-700 shadow-sm flex-shrink-0">{{ $users->count() }} Akun</span>
+                </div>
+                
+                {{-- Table Body Scrollable --}}
+                <div class="flex-1 overflow-y-auto overflow-x-auto custom-scrollbar p-2 sm:p-4">
+                    <table class="w-full text-left border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="text-gray-400 text-[9px] uppercase tracking-widest font-black border-b border-gray-100 dark:border-gray-800">
+                                <th class="px-4 py-4 w-1/3">Profil Pengguna</th>
+                                <th class="px-4 py-4">Role</th>
+                                <th class="px-4 py-4">Instansi Terkait</th>
+                                <th class="px-4 py-4 text-center">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800/60">
+                            @foreach($users as $u)
+                            <tr class="hover:bg-teal-50/30 dark:hover:bg-teal-900/10 transition-colors group">
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-sm shadow-inner {{ $u->role == 'admin' ? 'bg-red-500' : ($u->role == 'pimpinan' ? 'bg-blue-500' : 'bg-teal-500') }}">
+                                            {{ substr($u->name, 0, 1) }}
+                                        </div>
+                                        <div>
+                                            <p class="text-xs sm:text-sm font-bold text-gray-800 dark:text-gray-100">{{ $u->name }}</p>
+                                            <p class="text-[9px] sm:text-[10px] text-gray-500 font-medium mt-0.5">{{ $u->email }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    @if($u->role == 'admin')
+                                        <span class="px-3 py-1.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 rounded-lg text-[9px] font-black uppercase tracking-widest flex w-fit items-center"><span class="w-1.5 h-1.5 rounded-full bg-red-500 mr-2"></span>ADMIN</span>
+                                    @elseif($u->role == 'pimpinan')
+                                        <span class="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50 rounded-lg text-[9px] font-black uppercase tracking-widest flex w-fit items-center"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></span>PIMPINAN</span>
                                     @else
-                                    <span class="text-[8px] sm:text-[10px] font-bold text-green-500 bg-green-50 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded border border-green-200 flex-shrink-0">Sedang Login</span>
+                                        <span class="px-3 py-1.5 bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800/50 rounded-lg text-[9px] font-black uppercase tracking-widest flex w-fit items-center"><span class="w-1.5 h-1.5 rounded-full bg-teal-500 mr-2"></span>OPD / STAF</span>
                                     @endif
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </td>
+                                <td class="px-4 py-4">
+                                    @if(empty($u->opd_name) || $u->opd_name == 'null' || $u->opd_name == '')
+                                        <span class="text-[9px] font-bold text-gray-400 italic">Pusat / Kosong</span>
+                                    @else
+                                        <span class="text-[11px] font-bold text-gray-700 dark:text-gray-300">{{ $u->opd_name }}</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-4 text-center">
+                                    <div class="flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button type="button" onclick="openEditModal({{ json_encode($u) }})" class="p-2 bg-gray-100 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 rounded-xl transition-colors shadow-sm" title="Edit Akun">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                        </button>
+
+                                        @if($u->id !== auth()->user()->id)
+                                        <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST" onsubmit="return confirm('Yakin menghapus permanen akun {{ $u->name }}?');">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="p-2 bg-gray-100 dark:bg-gray-800 hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-500 hover:text-red-600 dark:hover:text-red-400 rounded-xl transition-colors shadow-sm" title="Hapus Akun">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            </button>
+                                        </form>
+                                        @else
+                                        <span class="text-[9px] font-black text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800 uppercase tracking-widest flex items-center h-fit">Online</span>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
+            
+            {{-- FORM BUAT AKUN UNTUK MOBILE (DITAMPILKAN DI BAWAH JIKA DI HP) --}}
+            <div class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl rounded-[32px] shadow-lg border border-white dark:border-gray-800 p-6 sm:p-8 h-fit relative overflow-hidden z-10 lg:hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-teal-200/20 dark:bg-teal-900/10 rounded-bl-full -z-10 blur-xl"></div>
+                
+                <h3 class="text-base sm:text-lg font-extrabold mb-6 text-gray-800 dark:text-white flex items-center gap-3">
+                    <span class="bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 p-2 rounded-xl flex-shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                    </span>
+                    <span class="truncate">Buat Akun Baru</span>
+                </h3>
+                
+                <form action="{{ route('admin.users.store') }}" method="POST" class="space-y-4">
+                    @csrf
+                    {{-- Input Form Sama Seperti di Atas --}}
+                    <div class="space-y-1.5 group">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Nama Lengkap / Jabatan <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" required class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm">
+                    </div>
+                    
+                    <div class="space-y-1.5 group">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Email Login <span class="text-red-500">*</span></label>
+                        <input type="email" name="email" required class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm">
+                    </div>
+                    
+                    <div class="space-y-1.5 group" x-data="{ showPassword: false }">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Password Default <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input :type="showPassword ? 'text' : 'password'" name="password" required class="w-full pl-5 pr-12 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm" placeholder="••••••••">
+                            <button type="button" @click="showPassword = !showPassword" class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-teal-600 focus:outline-none transition-colors">
+                                <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                <svg x-show="showPassword" x-cloak class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5 group">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Hak Akses (Role) <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <select name="role" required class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm font-bold transition-all shadow-sm appearance-none cursor-pointer">
+                                <option value="opd">OPD (Staf / Operator)</option>
+                                <option value="pimpinan">Pimpinan (Camat / Kadis)</option>
+                                <option value="admin">Super Admin (Kominfo)</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-1.5 group pt-1">
+                        <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block transition-colors group-focus-within:text-teal-600">Nama Instansi (OPD)</label>
+                        <input type="text" name="opd_name" class="w-full px-5 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-teal-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-teal-500/10 outline-none text-xs sm:text-sm transition-all shadow-sm">
+                        <p class="text-[9px] text-orange-500 font-bold mt-2 ml-3 leading-tight flex items-start gap-1">
+                            <svg class="w-3 h-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg> 
+                            <span>Wajib diisi identik untuk Staf dan Pimpinannya.</span>
+                        </p>
+                    </div>
+                    
+                    <div class="pt-4 border-t border-gray-100 dark:border-gray-800/60 mt-4">
+                        <button type="submit" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-teal-500/30 active:scale-[0.98] transition-all flex items-center justify-center">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                            Simpan Akun
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
         </div>
-        </div>
-    </div>
+    </main>
 </div>
 
 {{-- MODAL EDIT USER --}}
-<div id="editUserModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-2 sm:p-4 overflow-y-auto">
-    <div class="fixed inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeEditModal()"></div>
+<div id="editUserModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeEditModal()"></div>
     
-    <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-3xl shadow-2xl w-full max-w-sm relative z-10 transform transition-all border border-gray-100 dark:border-gray-700 overflow-hidden my-4">
-        <div class="px-3 sm:px-6 py-3 sm:py-5 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 flex justify-between items-center gap-2">
-            <h3 class="text-base sm:text-lg font-extrabold text-gray-800 dark:text-white flex items-center gap-2">
-                <svg class="w-4 sm:w-5 h-4 sm:h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                <span class="truncate">Edit Akun Pengguna</span>
+    <div class="bg-white dark:bg-gray-900 rounded-[32px] shadow-2xl w-full max-w-sm relative z-10 transform transition-all border border-white/20 overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50 flex justify-between items-center">
+            <h3 class="text-lg font-black text-gray-800 dark:text-white flex items-center gap-3 uppercase tracking-tight">
+                <span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 p-2 rounded-xl">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </span>
+                Edit Akun
             </h3>
-            <button onclick="closeEditModal()" class="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 p-1 sm:p-1.5 rounded-full transition-colors flex-shrink-0">
-                <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button onclick="closeEditModal()" class="p-2 text-gray-400 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         
-        <form id="formEditUser" method="POST" class="p-3 sm:p-6 space-y-2.5 sm:space-y-4">
+        <form id="formEditUser" method="POST" class="p-6 space-y-4">
             @csrf
             @method('PUT')
             
-            <div>
-                <label class="block text-[8px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1.5 uppercase tracking-wide">Nama Lengkap <span class="text-red-500">*</span></label>
-                <input type="text" name="name" id="edit_name" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-xs sm:text-sm shadow-sm">
+            <div class="space-y-1.5">
+                <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">Nama Lengkap <span class="text-red-500">*</span></label>
+                <input type="text" name="name" id="edit_name" required class="w-full px-4 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-blue-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-blue-500/10 outline-none text-xs sm:text-sm font-bold shadow-sm transition-all">
             </div>
-            <div>
-                <label class="block text-[8px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1.5 uppercase tracking-wide">Email <span class="text-red-500">*</span></label>
-                <input type="email" name="email" id="edit_email" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-xs sm:text-sm shadow-sm">
+            
+            <div class="space-y-1.5">
+                <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">Email <span class="text-red-500">*</span></label>
+                <input type="email" name="email" id="edit_email" required class="w-full px-4 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-blue-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-blue-500/10 outline-none text-xs sm:text-sm font-bold shadow-sm transition-all">
             </div>
 
-            {{-- FIELD PASSWORD EDIT DENGAN IKON MATA --}}
-            <div x-data="{ showPasswordEdit: false }">
-                <label class="block text-xs font-bold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">Ganti Password (Opsional)</label>
+            <div class="space-y-1.5" x-data="{ showPasswordEdit: false }">
+                <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">Ganti Password</label>
                 <div class="relative">
-                    <input :type="showPasswordEdit ? 'text' : 'password'" name="password" class="w-full rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-sm shadow-sm pr-10" placeholder="Kosongkan jika tidak ingin ganti">
-                    <button type="button" @click="showPasswordEdit = !showPasswordEdit" class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none">
-                        <svg x-show="!showPasswordEdit" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                    <input :type="showPasswordEdit ? 'text' : 'password'" name="password" class="w-full pl-4 pr-12 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-blue-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-blue-500/10 outline-none text-xs sm:text-sm font-bold shadow-sm transition-all" placeholder="Kosongkan jika tetap">
+                    <button type="button" @click="showPasswordEdit = !showPasswordEdit" class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-blue-600 focus:outline-none transition-colors">
+                        <svg x-show="!showPasswordEdit" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         <svg x-show="showPasswordEdit" x-cloak class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                     </button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 sm:gap-4">
-                <div>
-                    <label class="block text-[8px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1.5 uppercase tracking-wide">Role <span class="text-red-500">*</span></label>
-                    <select name="role" id="edit_role" required class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-xs sm:text-sm shadow-sm cursor-pointer">
-                        <option value="opd">OPD</option>
-                        <option value="pimpinan">Pimpinan</option>
-                        <option value="admin">Admin</option>
-                    </select>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">Role <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <select name="role" id="edit_role" required class="w-full px-4 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-blue-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-blue-500/10 outline-none text-xs sm:text-sm font-bold shadow-sm transition-all appearance-none cursor-pointer">
+                            <option value="opd">OPD</option>
+                            <option value="pimpinan">Pimpinan</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                            <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-[8px] sm:text-xs font-bold text-gray-600 dark:text-gray-400 mb-0.5 sm:mb-1.5 uppercase tracking-wide">Instansi</label>
-                    <input type="text" name="opd_name" id="edit_opd_name" class="w-full rounded-lg sm:rounded-xl border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-blue-500 focus:ring-blue-500 text-xs sm:text-sm shadow-sm bg-gray-50 dark:bg-gray-800">
+                <div class="space-y-1.5">
+                    <label class="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[1px] ml-3 block">Instansi</label>
+                    <input type="text" name="opd_name" id="edit_opd_name" class="w-full px-4 py-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/50 border border-transparent focus:border-blue-500/30 focus:bg-white dark:focus:bg-gray-800 focus:ring-4 focus:ring-blue-500/10 outline-none text-xs sm:text-sm font-bold shadow-sm transition-all">
                 </div>
             </div>
             
-            <div class="pt-2 sm:pt-4 mt-3 sm:mt-6 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-2 sm:gap-3">
-                <button type="button" onclick="closeEditModal()" class="px-3 sm:px-5 py-1.5 sm:py-2.5 text-xs sm:text-sm font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg sm:rounded-xl transition-colors">Batal</button>
-                <button type="submit" class="px-3 sm:px-5 py-1.5 sm:py-2.5 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md shadow-blue-500/30 rounded-lg sm:rounded-xl transition-all">Simpan Perubahan</button>
+            <div class="pt-6 border-t border-gray-100 dark:border-gray-800 mt-4 flex justify-end gap-3">
+                <button type="button" onclick="closeEditModal()" class="px-6 py-3.5 text-[10px] sm:text-xs font-black text-gray-600 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 rounded-2xl transition-colors uppercase tracking-widest">Batal</button>
+                <button type="submit" class="px-6 py-3.5 text-[10px] sm:text-xs font-black text-white bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-500/30 rounded-2xl transition-all active:scale-[0.98] uppercase tracking-widest">Simpan Perubahan</button>
             </div>
         </form>
     </div>
 </div>
 
 <style>
-    /* Menyembunyikan scrollbar bawaan browser tapi tetap bisa discroll untuk tabel */
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: #cbd5e1;
-        border-radius: 20px;
-    }
+    /* Styling scrollbar dropdown dan tabel agar konsisten & rapi */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #475569; }
+    [x-cloak] { display: none !important; }
 </style>
 
 <script>
