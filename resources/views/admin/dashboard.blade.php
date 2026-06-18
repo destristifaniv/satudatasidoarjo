@@ -1,10 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex min-h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 overflow-hidden" 
+<div class="flex min-h-screen bg-[#F8F9FA] dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500" 
      x-data="{ sidebarOpen: window.innerWidth >= 1024 }" @resize.window="if (window.innerWidth >= 1024) sidebarOpen = true">
     
-    <aside :class="sidebarOpen ? 'translate-x-0 shadow-xl' : '-translate-x-full shadow-none'" class="fixed inset-y-0 left-0 z-50 w-72 transform overflow-hidden bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col lg:relative lg:translate-x-0 lg:shadow-xl lg:h-screen lg:w-72">
+    {{-- Backdrop untuk mobile --}}
+    <div :class="sidebarOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'" class="fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity duration-300" @click="sidebarOpen = false"></div>
+    
+    <aside :class="sidebarOpen ? 'translate-x-0 shadow-xl lg:relative lg:translate-x-0' : '-translate-x-full lg:hidden shadow-none'" class="fixed inset-y-0 left-0 z-50 w-72 transform overflow-hidden bg-gradient-to-b from-teal-700 via-teal-600 to-teal-500 dark:from-teal-900 dark:via-teal-800 dark:to-teal-700 backdrop-blur-2xl border-r border-teal-400/30 transition-all duration-500 ease-in-out flex flex-col lg:h-screen lg:w-72">
         <div class="p-5 h-24 border-b border-teal-400/30 flex items-center justify-between overflow-hidden">
             <div class="flex items-center space-x-3 min-w-[180px]" x-show="sidebarOpen" x-transition>
                 <img src="https://adminweb.sidoarjokab.go.id/upload/link/1703218932.png" alt="Logo" class="w-10 h-10 object-contain rounded-xl shadow-lg bg-white/90 p-1">
@@ -42,10 +45,10 @@
     </aside>
 
     {{-- Main Container: p-4 sm:p-6 lg:p-8 untuk merampingkan jarak --}}
-    <main class="flex-1 min-h-screen lg:h-screen overflow-y-auto p-4 sm:p-6 lg:p-8 relative text-left transition-colors duration-500">
+    <main class="flex-1 w-full min-h-screen lg:h-screen overflow-y-auto p-4 sm:p-6 lg:p-8 relative text-left transition-all duration-500">
         <header class="flex flex-col gap-4 md:flex-row justify-between md:items-center mb-8 text-left">
             <div class="flex items-center gap-3">
-                <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2.5 rounded-xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
+                <button @click="sidebarOpen = !sidebarOpen" x-show="!sidebarOpen" class="p-2.5 rounded-xl bg-white dark:bg-gray-900 shadow-sm border border-gray-100 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
                 </button>
                 <div>
