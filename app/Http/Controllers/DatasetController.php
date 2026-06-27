@@ -19,7 +19,7 @@ class DatasetController extends Controller
     {
         $user = auth()->user();
 
-        // 🔥 LOGIKA AJAIB PENYAMBUNG DATA (ANTI BOCOR) 🔥
+        // LOGIKA AJAIB PENYAMBUNG DATA
         if ($user->role === 'admin') {
             $userIds = User::pluck('id'); 
         } else {
@@ -121,8 +121,7 @@ class DatasetController extends Controller
             $query->where('year_start', $request->year);
         }
 
-        // 🔥 GANTI BAGIAN SEARCH INI 🔥
-        // Perbaikan: Menggunakan orWhere dalam closure agar bisa mencari di banyak kolom (DSSD, nama, tags, satuan)
+        // SEARCH LAMA TETAP DIPERTAHANKAN
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -133,14 +132,78 @@ class DatasetController extends Controller
             });
         }
 
-        $datasets = $query->latest()->paginate(10)->withQueryString();
+        // Search dari halaman publik dataset menggunakan name="q"
+        if ($request->filled('q')) {
+            $keyword = $request->q;
+            $query->where(function($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                  ->orWhere('description', 'like', '%' . $keyword . '%')
+                  ->orWhere('dssd_code', 'like', '%' . $keyword . '%')
+                  ->orWhere('tags', 'like', '%' . $keyword . '%')
+                  ->orWhere('unit', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        // Filter organisasi
+        if ($request->filled('org')) {
+            $query->where('user_id', $request->org);
+        }
+
+        // Filter format file
+        if ($request->filled('format')) {
+            $query->where('file_path', 'like', '%.' . $request->format);
+        }
+
+        // Filter status metadata
+        if ($request->filled('metadata_status')) {
+            if ($request->metadata_status === 'lengkap') {
+                $query->whereNotNull('dssd_code')
+                      ->where('dssd_code', '!=', '')
+                      ->whereNotNull('description')
+                      ->where('description', '!=', '')
+                      ->whereNotNull('tags')
+                      ->where('tags', '!=', '')
+                      ->whereNotNull('unit')
+                      ->where('unit', '!=', '')
+                      ->whereNotNull('frequency')
+                      ->where('frequency', '!=', '');
+            } elseif ($request->metadata_status === 'belum_lengkap') {
+                $query->where(function($q) {
+                    $q->whereNull('dssd_code')
+                      ->orWhere('dssd_code', '')
+                      ->orWhereNull('description')
+                      ->orWhere('description', '')
+                      ->orWhereNull('tags')
+                      ->orWhere('tags', '')
+                      ->orWhereNull('unit')
+                      ->orWhere('unit', '')
+                      ->orWhereNull('frequency')
+                      ->orWhere('frequency', '');
+                });
+            }
+        }
+
+        // Urutkan dataset
+        if ($request->filled('sort')) {
+            if ($request->sort === 'terlama') {
+                $query->oldest();
+            } elseif ($request->sort === 'download') {
+                $query->orderByDesc('downloads');
+            } else {
+                $query->latest();
+            }
+        } else {
+            $query->latest();
+        }
+
+        $datasets = $query->paginate(10)->withQueryString();
 
         return view('admin.manage-dataset', compact('datasets'));
     }
 
     public function create() 
     { 
-        // 🔥 FITUR AUTOCOMPLETE DSSD 🔥
+        // FITUR AUTOCOMPLETE DSSD
         // Mengambil daftar DSSD dan Nama yang sudah ada di database untuk dijadikan rekomendasi
         $masterDatasets = Dataset::select('dssd_code', 'name')
                             ->distinct('dssd_code')
@@ -353,5 +416,119 @@ class DatasetController extends Controller
 
         $pesan = $request->status == 'approved' ? 'Dataset disetujui!' : 'Dataset dikembalikan untuk direvisi.';
         return redirect()->back()->with('success', $pesan);
+    }
+
+    /**
+     * API JSON Dataset
+     * Digunakan agar dataset dapat dikonsumsi oleh platform lain
+     */
+    public function apiIndex(Request $request)
+    {
+        $query = Dataset::with('user');
+
+        if ($request->filled('q')) {
+            $keyword = $request->q;
+            $query->where(function($q) use ($keyword) {
+                $q->where('name', 'like', '%' . $keyword . '%')
+                  ->orWhere('description', 'like', '%' . $keyword . '%')
+                  ->orWhere('dssd_code', 'like', '%' . $keyword . '%')
+                  ->orWhere('tags', 'like', '%' . $keyword . '%')
+                  ->orWhere('unit', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        if ($request->filled('org')) {
+            $query->where('user_id', $request->org);
+        }
+
+        if ($request->filled('year')) {
+            $query->where('year_start', $request->year);
+        }
+
+        if ($request->filled('format')) {
+            $query->where('file_path', 'like', '%.' . $request->format);
+        }
+
+        if ($request->filled('metadata_status')) {
+            if ($request->metadata_status === 'lengkap') {
+                $query->whereNotNull('dssd_code')
+                      ->where('dssd_code', '!=', '')
+                      ->whereNotNull('description')
+                      ->where('description', '!=', '')
+                      ->whereNotNull('tags')
+                      ->where('tags', '!=', '')
+                      ->whereNotNull('unit')
+                      ->where('unit', '!=', '')
+                      ->whereNotNull('frequency')
+                      ->where('frequency', '!=', '');
+            } elseif ($request->metadata_status === 'belum_lengkap') {
+                $query->where(function($q) {
+                    $q->whereNull('dssd_code')
+                      ->orWhere('dssd_code', '')
+                      ->orWhereNull('description')
+                      ->orWhere('description', '')
+                      ->orWhereNull('tags')
+                      ->orWhere('tags', '')
+                      ->orWhereNull('unit')
+                      ->orWhere('unit', '')
+                      ->orWhereNull('frequency')
+                      ->orWhere('frequency', '');
+                });
+            }
+        }
+
+        if ($request->filled('sort')) {
+            if ($request->sort === 'terlama') {
+                $query->oldest();
+            } elseif ($request->sort === 'download') {
+                $query->orderByDesc('downloads');
+            } else {
+                $query->latest();
+            }
+        } else {
+            $query->latest();
+        }
+
+        $datasets = $query->paginate(10);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data dataset berhasil diambil',
+            'total' => $datasets->total(),
+            'current_page' => $datasets->currentPage(),
+            'last_page' => $datasets->lastPage(),
+            'per_page' => $datasets->perPage(),
+            'filters' => [
+                'q' => $request->q,
+                'org' => $request->org,
+                'year' => $request->year,
+                'format' => $request->format,
+                'metadata_status' => $request->metadata_status,
+                'sort' => $request->sort,
+            ],
+            'data' => $datasets->map(function ($dataset) {
+                return [
+                    'id' => $dataset->id,
+                    'judul' => $dataset->name,
+                    'deskripsi' => $dataset->description,
+                    'organisasi' => $dataset->organization ?? optional($dataset->user)->opd_name ?? optional($dataset->user)->name,
+                    'kategori' => $dataset->category,
+                    'tahun_awal' => $dataset->year_start,
+                    'tahun_akhir' => $dataset->year_end,
+                    'format_file' => strtoupper(pathinfo($dataset->file_path, PATHINFO_EXTENSION)),
+                    'jumlah_download' => $dataset->downloads ?? 0,
+                    'tags' => $dataset->tags,
+                    'metadata' => [
+                        'kode_dssd' => $dataset->dssd_code,
+                        'satuan' => $dataset->unit,
+                        'frekuensi' => $dataset->frequency,
+                        'level' => $dataset->level,
+                    ],
+                    'status' => $dataset->status,
+                    'tanggal_upload' => optional($dataset->created_at)->format('Y-m-d H:i:s'),
+                    'tanggal_update' => optional($dataset->updated_at)->format('Y-m-d H:i:s'),
+                ];
+            }),
+        ]);
     }
 }
